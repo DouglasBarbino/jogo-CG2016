@@ -101,8 +101,11 @@ public class ProtejaSeuJardim implements GLEventListener {
         //Aqui que realmente manda desenhar a cor de fundo
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        desenhaPlantas(gl, -100, -100);
-        desenhaSol(gl, 100, -100);
+        desenhaPlantas(gl, -100, -100, 1);
+        desenhaPlantas(gl, 100, 100, 2);
+        desenhaPlantas(gl, -100, 100, 3);
+        desenhaPlantas(gl, 100, -100, 4);
+        desenhaSol(gl, 0, 0);
         //Atualiza o que estah no frame buffer e manda pra tela
         gl.glFlush();
     }
@@ -111,8 +114,25 @@ public class ProtejaSeuJardim implements GLEventListener {
     }
     
     //x e y sao as coordenadas do ponto que liga a cabeca ao resto do corpo da planta
-    private void desenhaPlantas(GL gl, int x, int y){
-        gl.glColor3f(0.0f, 0.5f, 0.0f);
+    //tipo serve para definir o poder da planta, sendo:
+    //1=normal, 2=gelo, 3=fogo, 4=terra
+    private void desenhaPlantas(GL gl, int x, int y, int tipo){
+        switch (tipo) {
+            case 1:
+                gl.glColor3f(0.0f, 0.5f, 0.0f);
+                break;
+            case 2:
+                gl.glColor3f(0.5f, 0.5f, 1.0f);
+                break;
+            case 3:
+                gl.glColor3f(0.9f, 0.0f, 0.0f);
+                break;
+            case 4:
+                gl.glColor3f(0.7f, 0.5f, 0.3f);
+                break;
+            default:
+                gl.glColor3f(0.0f, 0.0f, 0.0f);
+        }
         gl.glBegin(gl.GL_POINTS);
         //Triangulo da cabeca
         desenhaLinha(gl, x, y, x+50, y-25);
@@ -130,6 +150,36 @@ public class ProtejaSeuJardim implements GLEventListener {
         gl.glColor3f(0.95f, 0.95f, 0.0f);
         gl.glBegin(gl.GL_POINTS);
         desenhaCirculo(gl, x, y, 10);
+        gl.glEnd();
+    }
+    
+    //x e y sao as coordenadas do ponto que liga a cabeca ao resto do corpo do zumbi
+    //tipo serve para definir o poder da zumbi, sendo:
+    //1=normal, 2=cone, 3=balde
+    private void desenhaZumbi(GL gl, int x, int y, int tipo){
+        switch (tipo) {
+            case 1:
+                gl.glColor3f(0.0f, 0.5f, 0.0f);
+                break;
+            case 2:
+                gl.glColor3f(0.5f, 0.5f, 1.0f);
+                break;
+            case 3:
+                gl.glColor3f(0.9f, 0.0f, 0.0f);
+                break;
+            case 4:
+                gl.glColor3f(0.7f, 0.5f, 0.3f);
+                break;
+            default:
+                gl.glColor3f(0.0f, 0.0f, 0.0f);
+        }
+        gl.glBegin(gl.GL_POINTS);
+        //Cabeca e corpo
+        desenhaCirculo(gl, x, y+15, 15);
+        desenhaLinha(gl, x, y, x, y-50);
+        //
+        desenhaLinha(gl, x, y-50, x-25, y-100);
+        desenhaLinha(gl, x, y-50, x+25, y-100);
         gl.glEnd();
     }
     
