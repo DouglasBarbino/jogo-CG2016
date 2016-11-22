@@ -106,6 +106,9 @@ public class ProtejaSeuJardim implements GLEventListener {
         desenhaPlantas(gl, -100, 100, 3);
         desenhaPlantas(gl, 100, -100, 4);
         desenhaSol(gl, 0, 0);
+        desenhaZumbi(gl, 200, 200, 1);
+        desenhaZumbi(gl, 200, 50, 2);
+        desenhaZumbi(gl, 200, -100, 3);
         //Atualiza o que estah no frame buffer e manda pra tela
         gl.glFlush();
     }
@@ -157,29 +160,35 @@ public class ProtejaSeuJardim implements GLEventListener {
     //tipo serve para definir o poder da zumbi, sendo:
     //1=normal, 2=cone, 3=balde
     private void desenhaZumbi(GL gl, int x, int y, int tipo){
-        switch (tipo) {
-            case 1:
-                gl.glColor3f(0.0f, 0.5f, 0.0f);
-                break;
-            case 2:
-                gl.glColor3f(0.5f, 0.5f, 1.0f);
-                break;
-            case 3:
-                gl.glColor3f(0.9f, 0.0f, 0.0f);
-                break;
-            case 4:
-                gl.glColor3f(0.7f, 0.5f, 0.3f);
-                break;
-            default:
-                gl.glColor3f(0.0f, 0.0f, 0.0f);
-        }
+        gl.glColor3f(0.3f, 0.3f, 0.3f);
         gl.glBegin(gl.GL_POINTS);
         //Cabeca e corpo
         desenhaCirculo(gl, x, y+15, 15);
         desenhaLinha(gl, x, y, x, y-50);
-        //
-        desenhaLinha(gl, x, y-50, x-25, y-100);
-        desenhaLinha(gl, x, y-50, x+25, y-100);
+        //Pernas e bracos
+        desenhaLinha(gl, x, y-50, x+10, y-100);
+        desenhaLinha(gl, x, y-50, x-20, y-100);
+        desenhaLinha(gl, x, y-10, x-30, y-30);
+        desenhaLinha(gl, x, y-10, x-25, y+15);
+        switch (tipo) {
+            case 2:
+                //Desenho do cone
+                gl.glColor3f(0.9f, 0.5f, 0.0f);
+                desenhaLinha(gl, x+25, y+15, x-25, y+15);
+                desenhaLinha(gl, x+20, y+15, x, y+45);
+                desenhaLinha(gl, x, y+45, x-20, y+15);
+                break;
+            case 3:
+                //Desenho do balde
+                gl.glColor3f(0.7f, 0.7f, 0.7f);
+                desenhaLinha(gl, x+20, y+15, x-20, y+15);
+                desenhaLinha(gl, x-20, y+15, x-10, y+35);
+                desenhaLinha(gl, x-10, y+35, x+10, y+35);
+                desenhaLinha(gl, x+10, y+35, x+20, y+15);
+                break;
+            default:
+                gl.glColor3f(0.0f, 0.0f, 0.0f);
+        }
         gl.glEnd();
     }
     
