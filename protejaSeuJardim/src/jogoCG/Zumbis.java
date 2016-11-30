@@ -5,8 +5,8 @@
  * Velocidade: velocidade da caminhada de um zumbi. Quanto maior a velocidade, mais rapido um zumbi anda.
  * Ataque: eh a quantidade de dano feita por um zumbi em uma planta.
  * Tipo: Temos 3 tipos de zumbis. Cada tipo possui um valor diferente dos atributos anteriores.
- * Os tipos de zumbi podem ser: 1 - Zumbi basico (padrão); 2 - Zumbi cone; 3 - Zumbi balde.
- * Para ver as diferencas de cada zumbi, veja o construtor desta classe. Basicamente, o zumbi básico eh o mais
+ * Os tipos de zumbi podem ser: 1 - Zumbi basico (padrao); 2 - Zumbi cone; 3 - Zumbi balde.
+ * Para ver as diferencas de cada zumbi, veja o construtor desta classe. Basicamente, o zumbi basico eh o mais
  * fraco e lento, e possui menor vida. O zumbi balde eh o mais forte, rapido e resistente, e o zumbi cone eh o
  * intermediario.
  */
@@ -22,14 +22,14 @@ public class Zumbis {
     int x = 803, y = 0; //Da a posicao do zumbi em determinado instante.
     //O zumbi sempre inicia "escondido" no lado extremo DIREITO da tela.
     //A altura aonde o zumbi aparecera na tela eh passada como parametro no construtor.
-    // A tela é composta por 3 linhas (fileiras) e 10 colunas
+    // A tela eh composta por 3 linhas (fileiras) e 10 colunas
     //200 pixels cada linha (eixo Y) e 80 pixels cada coluna (eixo X)
     
     public void Zumbis(int type, int alturaZ){
     
         this.tipo = type;
         
-        //Agora setaremos em qual das 3 fileiras da tela o zumbi aparecerá
+        //Agora setaremos em qual das 3 fileiras da tela o zumbi aparecera
         //o zumbi tem altura igual a 90 pixels e cada uma das 3 fileiras tem 600/3 = 200 pixels em Y
         if(alturaZ >= 1 || alturaZ <= 3){            
             switch(alturaZ){ 
@@ -75,7 +75,7 @@ public class Zumbis {
         
         //Classe para desenhar o zumbi se movimentando
         this.x -= this.velocidade; //Vai do ponto
-        try {Thread.sleep(2000); /*O tempo para o zumbi realizar outra caminhada é de 2 segundos*/} 
+        try {Thread.sleep(2000); /*O tempo para o zumbi realizar outra caminhada eh de 2 segundos*/} 
         catch (InterruptedException e) {System.out.println(e);}
     }//fim_caminhar()
     

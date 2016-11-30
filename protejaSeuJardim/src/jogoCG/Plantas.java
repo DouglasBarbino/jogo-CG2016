@@ -3,10 +3,10 @@
  * os zumbis antes que eles entrem em nossa casa
  * Vida: eh a quantidade de vida de cada tipo de planta. Ao chegar a 0, planta morre.
  * Ataque: eh a quantidade de dano feita por uma planta em um zumbi.
- * Custo: é a quantidade de sóis para se plantar uma planta.
+ * Custo: eh a quantidade de sois para se plantar uma planta.
  * Tipo: Temos 4 tipos de plantas. Cada tipo possui um valor diferente dos atributos anteriores ou algum efeito 
  * sobre os zumbis.
- * Os tipos de plantas podem ser: 1 - Planta Normal (padrão); 2 - Planta de Gelo; 3 - Planta de Fogo; 4 - Planta de Terra.
+ * Os tipos de plantas podem ser: 1 - Planta Normal (padrao); 2 - Planta de Gelo; 3 - Planta de Fogo; 4 - Planta de Terra.
  * As plantas normais lancam projeteis normais, nao causam efeitos e tem menor vida e ataque;
  * As plantas de gelo lancam projeteis congelantes que retardam zumbis da mesma fileira. Tem menor vida e ataque;
  * As plantas de fogo lancam projeteis de fogo e nao tem efeitos, mas tem maior ataque e vida;
@@ -72,7 +72,7 @@ public class Plantas {
     public void atacar(Zumbis z){
         
         if(z.getY() == this.y){
-            //lança projetil
+            //lanca projetil
             if(this.congelar == 1)
                 z.setVelocidade(-1);
             if(this.afastar == 1)

@@ -101,14 +101,15 @@ public class ProtejaSeuJardim implements GLEventListener {
         //Aqui que realmente manda desenhar a cor de fundo
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        desenhaPlantas(gl, -100, -100, 1);
-        desenhaPlantas(gl, 100, 100, 2);
-        desenhaPlantas(gl, -100, 100, 3);
-        desenhaPlantas(gl, 100, -100, 4);
+        desenhaMarcacoes(gl);
+        desenhaPlantas(gl, -120, -150, 1);
+        desenhaPlantas(gl, -120, 50, 2);
+        desenhaPlantas(gl, -120, 250, 3);
+        desenhaPlantas(gl, -200, 50, 4);
         desenhaSol(gl, 0, 0);
-        desenhaZumbi(gl, 200, 200, 1);
-        desenhaZumbi(gl, 200, 50, 2);
-        desenhaZumbi(gl, 200, -100, 3);
+        desenhaZumbi(gl, 200, 225, 1);
+        desenhaZumbi(gl, 200, 30, 2);
+        desenhaZumbi(gl, 200, -150, 3);
         //Atualiza o que estah no frame buffer e manda pra tela
         gl.glFlush();
     }
@@ -305,5 +306,24 @@ public class ProtejaSeuJardim implements GLEventListener {
         gl.glVertex2i(x+xc, -y+yc);
         gl.glVertex2i(-x+xc, -y+yc);
         gl.glVertex2i(-x+xc, y+yc);
+    }
+    
+    public void desenhaMarcacoes(GL gl){
+        gl.glColor3f(0.0f, 0.9f, 0.0f);
+        gl.glBegin(gl.GL_POINTS);
+        //Linhas horizontais
+        desenhaLinha(gl, -400, -100, 400, -100);
+        desenhaLinha(gl, -400, 100, 400, 100);
+        //Linhas horizontais
+        desenhaLinha(gl, -320, -300, -320, 300);
+        desenhaLinha(gl, -240, -300, -240, 300);
+        desenhaLinha(gl, -160, -300, -160, 300);
+        desenhaLinha(gl, -80, -300, -80, 300);
+        desenhaLinha(gl, 0, -300, 0, 300);
+        desenhaLinha(gl, 80, -300, 80, 300);
+        desenhaLinha(gl, 160, -300, 160, 300);
+        desenhaLinha(gl, 240, -300, 240, 300);
+        desenhaLinha(gl, 320, -300, 320, 300);
+        gl.glEnd();
     }
 }
