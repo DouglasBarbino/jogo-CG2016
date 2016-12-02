@@ -24,7 +24,7 @@ public class Plantas {
     int afastar = 0;
     int x, y; //x e y são as coordenadas da planta
     
-    public void Plantas(int type, int colunaP, int linhaP){
+    Plantas(int type, int colunaP, int linhaP){
         
         this.x = colunaP;
         this.y = linhaP;
@@ -69,16 +69,18 @@ public class Plantas {
         }//fim_switch
     }//fim_Plantas()
     
-    public void atacar(Zumbis z){
-        
-        if(z.getY() == this.y){
-            //lanca projetil
-            if(this.congelar == 1)
-                z.setVelocidade(-1);
-            if(this.afastar == 1)
-                z.setX(-1); 
-        }//fim_if
-        
+    public void atacar(Zumbis z) {
+
+        //lanca projetil
+        Projetil pro = new Projetil(this.y, this.x);
+        pro.Lancar(this.ataque, z);
+        if (this.congelar == 1) {
+            z.setVelocidade(-1);
+        }
+        if (this.afastar == 1) {
+            z.setX(-1);
+        }
+
     }//fim_atacar()
     
     public void morrer(){

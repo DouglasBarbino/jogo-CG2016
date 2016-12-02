@@ -22,7 +22,7 @@ public class ProtejaSeuJardim implements GLEventListener {
 
     private static int[] x = new int[1000];
     private static int[] y = new int[1000];
-    private static int count;
+    private static int count = 0;
     
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -102,6 +102,25 @@ public class ProtejaSeuJardim implements GLEventListener {
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
         desenhaMarcacoes(gl);
+        //Deteccao da carta que escolheu
+        /*if((x[count] >= -400) && (x[count] <= -370) && (y[count] <= 300) && (y[count] >= -100)){
+            if((y[count] > 200) && (y[count] <= 400)){//Carta referente a planta 1 - NORMAL
+                //Plantas(1, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
+                desenhaPlantas(gl, -120, -150, 1);
+            }
+            if((y[count] > 100) && (y[count] <= 200)){//Carta referente a planta 2 - GELO
+                //Plantas(2, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
+                desenhaPlantas(gl, -120, 50, 2);
+            }
+            if((y[count] > 0) && (y[count] <= 100)){//Carta referente a planta 3 - FOGO
+                //Plantas(3, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
+                desenhaPlantas(gl, -120, 250, 3);
+            }
+            if((y[count] > -100) && (y[count] <= 0)){//Carta referente a planta 4 - TERRA
+                //Plantas(4, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
+                desenhaPlantas(gl, -200, 50, 4);
+            }
+        }*/
         desenhaPlantas(gl, -120, -150, 1);
         desenhaPlantas(gl, -120, 50, 2);
         desenhaPlantas(gl, -120, 250, 3);
@@ -314,7 +333,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         //Linhas horizontais
         desenhaLinha(gl, -400, -100, 400, -100);
         desenhaLinha(gl, -400, 100, 400, 100);
-        //Linhas horizontais
+        //Linhas verticais
         desenhaLinha(gl, -320, -300, -320, 300);
         desenhaLinha(gl, -240, -300, -240, 300);
         desenhaLinha(gl, -160, -300, -160, 300);
@@ -324,6 +343,17 @@ public class ProtejaSeuJardim implements GLEventListener {
         desenhaLinha(gl, 160, -300, 160, 300);
         desenhaLinha(gl, 240, -300, 240, 300);
         desenhaLinha(gl, 320, -300, 320, 300);
+        //Cartas, linhas horizontaits
+        //Cor preta para as marcações        gl.glColor3f(0.0f, 0.5f, 0.0f);
+        
+        desenhaLinha(gl, -400, 300, -370, 300);
+        desenhaLinha(gl, -400, 200, -370, 200);
+        desenhaLinha(gl, -400, 100, -370, 100);
+        desenhaLinha(gl, -400, 0, -370, 0);
+        desenhaLinha(gl, -400, -100, -370, -100);
+        //Cartas, linhas verticais
+        desenhaLinha(gl, -370, 300, -370, -100);
+        
         gl.glEnd();
     }
 }
