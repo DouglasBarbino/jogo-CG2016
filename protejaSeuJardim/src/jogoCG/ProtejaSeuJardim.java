@@ -11,8 +11,10 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
-
-
+import jogoCG.Plantas;
+import jogoCG.Projetil;
+import jogoCG.Zumbis;
+import java.util.Random;
 
 /**
  * ProtejaSeuJardim.java
@@ -23,6 +25,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int[] x = new int[1000];
     private static int[] y = new int[1000];
     private static int count = 0;
+    private static Zumbis[] zumbi;
     
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -69,6 +72,21 @@ public class ProtejaSeuJardim implements GLEventListener {
         frame.setLocationRelativeTo(null);
         frame.setVisible(true);
         animator.start();
+        
+        //Inicializacao da classe randomica
+        Random random = new Random();
+        
+        //Criacao dos zumbis
+        zumbi = new Zumbis[25];
+        /*for(int i = 0;i<zumbi.length;i++)  
+            zumbi[i] = new Zumbis(1, );*/
+        //random.nextInt(3)+ 1 gera numeros entre 1 e 3
+        zumbi[0] = new Zumbis(1, random.nextInt(3)+ 1);
+        zumbi[0].setX(-283);
+        zumbi[1] = new Zumbis(2, random.nextInt(3)+ 1);
+        zumbi[1].setX(-203);
+        zumbi[2] = new Zumbis(3, random.nextInt(3)+ 1);
+        zumbi[2].setX(-123);
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -126,9 +144,9 @@ public class ProtejaSeuJardim implements GLEventListener {
         desenhaPlantas(gl, -120, 250, 3);
         desenhaPlantas(gl, -200, 50, 4);
         desenhaSol(gl, 0, 0);
-        desenhaZumbi(gl, 200, 225, 1);
-        desenhaZumbi(gl, 200, 30, 2);
-        desenhaZumbi(gl, 200, -150, 3);
+        desenhaZumbi(gl, zumbi[0].getX(), zumbi[0].getY(), zumbi[0].getTipo());
+        desenhaZumbi(gl, zumbi[1].getX(), zumbi[1].getY(), zumbi[1].getTipo());
+        desenhaZumbi(gl, zumbi[2].getX(), zumbi[2].getY(), zumbi[2].getTipo());
         //Atualiza o que estah no frame buffer e manda pra tela
         gl.glFlush();
     }

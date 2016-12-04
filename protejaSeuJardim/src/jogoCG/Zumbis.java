@@ -101,12 +101,22 @@ public class Zumbis {
     }//fim_setVelocidade
     
     void setX(int i){
+        
         this.x += i;
     }//fim_setX
     
     public int getX(){
         
         return this.x;
-    }//fim_getY()
+    }//fim_getX()
     
+    public int getY(){
+        
+        return this.y;
+    }//fim_getX()
+    
+    public int getTipo(){
+        
+        return this.tipo;
+    }//fim_getX()
 }//fim_class_Zumbis
