@@ -24,7 +24,10 @@ public class ProtejaSeuJardim implements GLEventListener {
 
     private static int[] x = new int[1000];
     private static int[] y = new int[1000];
-    private static int count = 0;
+    private static int[] xPlanta = new int[1000];
+    private static int[] yPlanta = new int[1000];
+    private static int count1 = 0, count2 = 0;
+    private static int aux1 = 0, aux2 = 0;
     private static Zumbis[] zumbi;
     
     public static void main(String[] args) {
@@ -60,10 +63,20 @@ public class ProtejaSeuJardim implements GLEventListener {
                 if (e.getButton() == MouseEvent.BUTTON1) { //Botao esquerdo
                     //Convertendo o sistema de coordenadas do canvas para o OpenGL
                     //No Windows nao eh tao centralizado assim o clique do mouse
-                    x[count] = e.getX() - 391; //centralizando
-                    y[count] = e.getY() * -1 + 280; //invertendo e centralizando
-                    System.out.println("x,y=" + x[count] + "," + y[count]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
-                    count++;
+                    if ((e.getX() - 391) <= -320) {
+                        x[count1] = e.getX() - 391; //centralizando
+                        y[count1] = e.getY() * -1 + 280; //invertendo e centralizando
+                        System.out.println("x,y=" + x[count1] + "," + y[count1]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                        aux1 = count1;
+                        count1++;
+                    }
+                    else{
+                        xPlanta[count2] = e.getX() - 391; //centralizando
+                        yPlanta[count2] = e.getY() * -1 + 280; //invertendo e centralizando
+                        System.out.println("xPlanta,yPlanta=" + xPlanta[count2] + "," + yPlanta[count2]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                        aux2 = count2;
+                        count2++;
+                    }
                     canvas.display();
                 }
             }
@@ -115,40 +128,59 @@ public class ProtejaSeuJardim implements GLEventListener {
     }
 
     public void display(GLAutoDrawable drawable) {
-        GL gl = drawable.getGL();
-        //Aqui que realmente manda desenhar a cor de fundo
-        gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
-        gl.glLoadIdentity();
-        desenhaMarcacoes(gl);
-        //Deteccao da carta que escolheu
-        /*if((x[count] >= -400) && (x[count] <= -370) && (y[count] <= 300) && (y[count] >= -100)){
-            if((y[count] > 200) && (y[count] <= 400)){//Carta referente a planta 1 - NORMAL
-                //Plantas(1, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
-                desenhaPlantas(gl, -120, -150, 1);
+        int mX, mY, mXPlanta, mYPlanta, z;
+        for (z = 0; z <= aux1; z++) {
+            mX = x[z];
+            mY = y[z];
+            mXPlanta = xPlanta[z];
+            mYPlanta = yPlanta[z];
+
+            GL gl = drawable.getGL();
+            //Aqui que realmente manda desenhar a cor de fundo
+            gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+            gl.glLoadIdentity();
+            desenhaMarcacoes(gl);
+            //Deteccao da carta que escolheu
+            if ((mX >= -400) && (mX <= -320) && (mY <= 300) && (mY >= -300) /*&& (mX != 0) && (mY != 0)*/) {
+
+                if ((mY <= 300) && (mY > 150)) {//Carta referente a planta 1 - NORMAL
+                    //Plantas(1, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
+                    desenhaPlantas(gl, -290, 250, 1);
+                    //yPlanta[aux2] = 0;
+                }
+                if ((mY <= 150) && (mY > 0)) {//Carta referente a planta 2 - GELO
+                    //Plantas(2, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
+                    desenhaPlantas(gl, -290, 50, 2);
+                    //yPlanta[aux2] = 0;
+                }
+                if ((mY <= 0) && (mY > -150)) {//Carta referente a planta 3 - FOGO
+                    //Plantas(3, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
+                    desenhaPlantas(gl, -210, -150, 3);
+                    //yPlanta[aux2] = 0;
+                }
+                if ((mY <= -150) && (mY >= -300)) {//Carta referente a planta 4 - TERRA
+                    //Plantas(4, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
+                    desenhaPlantas(gl, -290, 50, 4);
+                    //yPlanta[aux2] = 0;
+                }
             }
-            if((y[count] > 100) && (y[count] <= 200)){//Carta referente a planta 2 - GELO
-                //Plantas(2, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
-                desenhaPlantas(gl, -120, 50, 2);
-            }
-            if((y[count] > 0) && (y[count] <= 100)){//Carta referente a planta 3 - FOGO
-                //Plantas(3, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
-                desenhaPlantas(gl, -120, 250, 3);
-            }
-            if((y[count] > -100) && (y[count] <= 0)){//Carta referente a planta 4 - TERRA
-                //Plantas(4, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
-                desenhaPlantas(gl, -200, 50, 4);
-            }
-        }*/
-        desenhaPlantas(gl, -120, -150, 1);
-        desenhaPlantas(gl, -120, 50, 2);
-        desenhaPlantas(gl, -120, 250, 3);
-        desenhaPlantas(gl, -200, 50, 4);
-        desenhaSol(gl, 0, 0);
-        desenhaZumbi(gl, zumbi[0].getX(), zumbi[0].getY(), zumbi[0].getTipo());
-        desenhaZumbi(gl, zumbi[1].getX(), zumbi[1].getY(), zumbi[1].getTipo());
-        desenhaZumbi(gl, zumbi[2].getX(), zumbi[2].getY(), zumbi[2].getTipo());
-        //Atualiza o que estah no frame buffer e manda pra tela
-        gl.glFlush();
+            /*
+            * desenhaLinha(gl, -400, 150, -320, 150);
+            * desenhaLinha(gl, -400, 0, -320, 0);
+            * desenhaLinha(gl, -400, -150, -320, -150);
+            */
+
+            desenhaPlantas(gl, -370, 250, 1);
+            desenhaPlantas(gl, -370, 100, 2);
+            desenhaPlantas(gl, -370, -50, 3);
+            desenhaPlantas(gl, -370, -180, 4);
+            desenhaSol(gl, 0, 0);
+            desenhaZumbi(gl, zumbi[0].getX(), zumbi[0].getY(), zumbi[0].getTipo());
+            desenhaZumbi(gl, zumbi[1].getX(), zumbi[1].getY(), zumbi[1].getTipo());
+            desenhaZumbi(gl, zumbi[2].getX(), zumbi[2].getY(), zumbi[2].getTipo());
+            //Atualiza o que estah no frame buffer e manda pra tela
+            gl.glFlush();
+        }
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
@@ -349,10 +381,9 @@ public class ProtejaSeuJardim implements GLEventListener {
         gl.glColor3f(0.0f, 0.9f, 0.0f);
         gl.glBegin(gl.GL_POINTS);
         //Linhas horizontais
-        desenhaLinha(gl, -400, -100, 400, -100);
-        desenhaLinha(gl, -400, 100, 400, 100);
+        desenhaLinha(gl, -320, -100, 400, -100);
+        desenhaLinha(gl, -320, 100, 400, 100);
         //Linhas verticais
-        desenhaLinha(gl, -320, -300, -320, 300);
         desenhaLinha(gl, -240, -300, -240, 300);
         desenhaLinha(gl, -160, -300, -160, 300);
         desenhaLinha(gl, -80, -300, -80, 300);
@@ -361,16 +392,15 @@ public class ProtejaSeuJardim implements GLEventListener {
         desenhaLinha(gl, 160, -300, 160, 300);
         desenhaLinha(gl, 240, -300, 240, 300);
         desenhaLinha(gl, 320, -300, 320, 300);
-        //Cartas, linhas horizontaits
-        //Cor preta para as marcações        gl.glColor3f(0.0f, 0.5f, 0.0f);
         
-        desenhaLinha(gl, -400, 300, -370, 300);
-        desenhaLinha(gl, -400, 200, -370, 200);
-        desenhaLinha(gl, -400, 100, -370, 100);
-        desenhaLinha(gl, -400, 0, -370, 0);
-        desenhaLinha(gl, -400, -100, -370, -100);
-        //Cartas, linhas verticais
-        desenhaLinha(gl, -370, 300, -370, -100);
+        //Cartas, linha vertical
+        //Cor preta para as marcações        
+        gl.glColor3f(0.0f, 0.5f, 0.0f);        
+        desenhaLinha(gl, -320, -300, -320, 300);
+        //CARTAS, horizontal
+        desenhaLinha(gl, -400, 150, -320, 150);
+        desenhaLinha(gl, -400, 0, -320, 0);
+        desenhaLinha(gl, -400, -150, -320, -150);
         
         gl.glEnd();
     }
