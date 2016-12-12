@@ -29,6 +29,10 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int count1 = 0, count2 = 0;
     private static int aux1 = 0, aux2 = 0;
     private static Zumbis[] zumbi;
+    private static Plantas[] planta;
+    private static int geraPlanta = 0;
+    private static int tipoPlanta = 0;
+    private static int contadorPlanta = 0;
     
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -69,13 +73,21 @@ public class ProtejaSeuJardim implements GLEventListener {
                         System.out.println("x,y=" + x[count1] + "," + y[count1]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                         aux1 = count1;
                         count1++;
+                        //Para poder gerar uma planta nova
+                        if (geraPlanta == 0)
+                            geraPlanta++;
                     }
                     else{
-                        xPlanta[count2] = e.getX() - 391; //centralizando
-                        yPlanta[count2] = e.getY() * -1 + 280; //invertendo e centralizando
-                        System.out.println("xPlanta,yPlanta=" + xPlanta[count2] + "," + yPlanta[count2]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
-                        aux2 = count2;
-                        count2++;
+                        //Apenas pega essa coordenada caso for gerar uma planta nova
+                        if (geraPlanta == 1){
+                            xPlanta[count2] = e.getX() - 391; //centralizando
+                            yPlanta[count2] = e.getY() * -1 + 280; //invertendo e centralizando
+                            System.out.println("xPlanta,yPlanta=" + xPlanta[count2] + "," + yPlanta[count2]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                            aux2 = count2;
+                            count2++;
+                            geraPlanta--;
+                            criaPlanta(tipoPlanta, xPlanta[count2 - 1], yPlanta[count2 - 1]);
+                        }
                     }
                     canvas.display();
                 }
@@ -91,6 +103,8 @@ public class ProtejaSeuJardim implements GLEventListener {
         
         //Criacao dos zumbis
         zumbi = new Zumbis[25];
+        //Criacao das plantas
+        planta = new Plantas[27];
         /*for(int i = 0;i<zumbi.length;i++)  
             zumbi[i] = new Zumbis(1, );*/
         //random.nextInt(3)+ 1 gera numeros entre 1 e 3
@@ -128,7 +142,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     }
 
     public void display(GLAutoDrawable drawable) {
-        int mX, mY, mXPlanta, mYPlanta, z;
+        int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta;
         for (z = 0; z <= aux1; z++) {
             mX = x[z];
             mY = y[z];
@@ -145,22 +159,26 @@ public class ProtejaSeuJardim implements GLEventListener {
 
                 if ((mY <= 300) && (mY > 150)) {//Carta referente a planta 1 - NORMAL
                     //Plantas(1, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
-                    desenhaPlantas(gl, -290, 250, 1);
+                    //desenhaPlantas(gl, -290, 250, 1);
+                    tipoPlanta = 1;
                     //yPlanta[aux2] = 0;
                 }
                 if ((mY <= 150) && (mY > 0)) {//Carta referente a planta 2 - GELO
                     //Plantas(2, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
-                    desenhaPlantas(gl, -290, 50, 2);
+                    //desenhaPlantas(gl, -290, 50, 2);
+                    tipoPlanta = 2;
                     //yPlanta[aux2] = 0;
                 }
                 if ((mY <= 0) && (mY > -150)) {//Carta referente a planta 3 - FOGO
                     //Plantas(3, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
-                    desenhaPlantas(gl, -210, -150, 3);
+                    //desenhaPlantas(gl, -210, -150, 3);
+                    tipoPlanta = 3;
                     //yPlanta[aux2] = 0;
                 }
                 if ((mY <= -150) && (mY >= -300)) {//Carta referente a planta 4 - TERRA
                     //Plantas(4, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
-                    desenhaPlantas(gl, -290, 50, 4);
+                    //desenhaPlantas(gl, -290, 50, 4);
+                    tipoPlanta = 4;
                     //yPlanta[aux2] = 0;
                 }
             }
@@ -169,7 +187,11 @@ public class ProtejaSeuJardim implements GLEventListener {
             * desenhaLinha(gl, -400, 0, -320, 0);
             * desenhaLinha(gl, -400, -150, -320, -150);
             */
-
+            
+            for (desenhaPlanta=0; desenhaPlanta < contadorPlanta; desenhaPlanta++){
+                desenhaPlantas(gl, planta[desenhaPlanta].getX(), planta[desenhaPlanta].getY(), planta[desenhaPlanta].getTipo());
+            }
+            
             desenhaPlantas(gl, -370, 250, 1);
             desenhaPlantas(gl, -370, 100, 2);
             desenhaPlantas(gl, -370, -50, 3);
@@ -184,6 +206,30 @@ public class ProtejaSeuJardim implements GLEventListener {
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
+    }
+    
+    //Funcao para criar instancias na classe planta
+    private static void criaPlanta(int tipo, int x, int y){
+        int localX, localY;
+        
+        //Para o X basta apenas dividir a coordenada x clicada por 80 e  
+        //arredondar para cima, assim vamos conseguir gerar uma posicao
+        localX = Math.round(x/80);
+        //Correcao necessaria
+        if (x > 0){
+            localX++;
+        }
+        //No caso do Y, transladamos 100 pixels para facilitar a conta,
+        //além de que a divisao eh feita por 200
+        localY = Math.round((y-100)/200);
+        //Correcao necessaria
+        if (y > 100){
+            localY++;
+        }
+        
+        System.out.println("xFinal,yFinal=" + (localX * 80 - 50) + "," + (localY * 200 + 50));
+        planta[contadorPlanta] = new Plantas(tipo, (localX * 80 - 50), (localY * 200 + 50));
+        contadorPlanta++;
     }
     
     //x e y sao as coordenadas do ponto que liga a cabeca ao resto do corpo da planta

@@ -96,5 +96,10 @@ public class Plantas {
     public int getY(){
         
         return this.y;
+    }
+
+    public int getTipo(){
+        
+        return this.tipo;
     }//fim getY
 }//fim_class_Plantas
