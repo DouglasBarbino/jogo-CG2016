@@ -33,6 +33,12 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int geraPlanta = 0;
     private static int tipoPlanta = 0;
     private static int contadorPlanta = 0;
+    private static int contadorSol = 0;
+    private static int xSol = 0;
+    private static int ySol = 300;
+    private static int controleSol = 1;
+    //Inicializacao da classe randomica
+    private static Random random = new Random();
     
     public static void main(String[] args) {
         Frame frame = new Frame("Simple JOGL Application");
@@ -98,9 +104,6 @@ public class ProtejaSeuJardim implements GLEventListener {
         frame.setVisible(true);
         animator.start();
         
-        //Inicializacao da classe randomica
-        Random random = new Random();
-        
         //Criacao dos zumbis
         zumbi = new Zumbis[25];
         //Criacao das plantas
@@ -114,6 +117,9 @@ public class ProtejaSeuJardim implements GLEventListener {
         zumbi[1].setX(-203);
         zumbi[2] = new Zumbis(3, random.nextInt(3)+ 1);
         zumbi[2].setX(-123);
+        
+        //Sorteia uma coordenada para o solzinho entre -300 e 380
+        xSol = random.nextInt(680) - 300;
     }
 
     public void init(GLAutoDrawable drawable) {
@@ -196,10 +202,22 @@ public class ProtejaSeuJardim implements GLEventListener {
             desenhaPlantas(gl, -370, 100, 2);
             desenhaPlantas(gl, -370, -50, 3);
             desenhaPlantas(gl, -370, -180, 4);
-            desenhaSol(gl, 0, 0);
+            if (controleSol == 1){
+                desenhaSol(gl, xSol, ySol);
+            }
             desenhaZumbi(gl, zumbi[0].getX(), zumbi[0].getY(), zumbi[0].getTipo());
             desenhaZumbi(gl, zumbi[1].getX(), zumbi[1].getY(), zumbi[1].getTipo());
             desenhaZumbi(gl, zumbi[2].getX(), zumbi[2].getY(), zumbi[2].getTipo());
+            zumbi[0].caminhar();
+            //Atualiza Sol
+            contadorSol++;
+            ySol -= 3;
+            //Comando para um novo solzinho cair
+            if (contadorSol > 100){
+                contadorSol = 0;
+                xSol = random.nextInt(680) - 300;
+                ySol = 300;
+            }
             //Atualiza o que estah no frame buffer e manda pra tela
             gl.glFlush();
         }

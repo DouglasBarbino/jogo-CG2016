@@ -77,7 +77,7 @@ public class Zumbis {
         
         //Classe para desenhar o zumbi se movimentando
         this.x -= this.velocidade; //Vai do ponto
-        try {Thread.sleep(2000); /*O tempo para o zumbi realizar outra caminhada eh de 2 segundos*/} 
+        try {Thread.sleep(200); /*O tempo para o zumbi realizar outra caminhada eh de 2 segundos*/} 
         catch (InterruptedException e) {System.out.println(e);}
     }//fim_caminhar()
     
