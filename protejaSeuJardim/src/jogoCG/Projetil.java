@@ -8,19 +8,33 @@ package jogoCG;
 
 public class Projetil {
     
-    int x, y;
+    int x, y, aux;
 
     Projetil(int linha, int coluna) {
         this.y = linha; //em que linha, altura a planta esta
         this.x = coluna; //em que coluna a planta esta
+        this.aux = this.x;
     }
     
     public void Lancar(int ataque, Zumbis z){
         
-        while(this.x != z.getX()){
-                    x += 4;
-                }
-        //Se saiu do while, atingiu o zumbi
-        z.morrer(ataque);        
+        if(this.x >= z.getX()){
+            System.out.println("PROJETIL = " + this.x+" ZUMBI = "+ z.getX());
+            z.morrer(ataque);
+            this.x = aux;
+        }
+        this.x += 10; 
+    }
+    
+    public void setX(int i){
+        this.x -= i; 
+    }
+    
+    public int getX(){
+        return this.x;
+    }
+    
+    public int getY(){
+        return this.y;
     }
 }

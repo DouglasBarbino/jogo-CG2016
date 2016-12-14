@@ -30,13 +30,15 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int aux1 = 0, aux2 = 0;
     private static Zumbis[] zumbi;
     private static Plantas[] planta;
+    //private static Projetil[] projetil;
     private static int geraPlanta = 0;
     private static int tipoPlanta = 0;
     private static int contadorPlanta = 0;
     private static int contadorSol = 0;
     private static int xSol = 0;
     private static int ySol = 300;
-    private static int controleSol = 1;
+    private static int sois = 0;
+    //private static int controleSol = 1;
     //Inicializacao da classe randomica
     private static Random random = new Random();
     
@@ -108,8 +110,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         zumbi = new Zumbis[25];
         //Criacao das plantas
         planta = new Plantas[27];
-        /*for(int i = 0;i<zumbi.length;i++)  
-            zumbi[i] = new Zumbis(1, );*/
+        
         //random.nextInt(3)+ 1 gera numeros entre 1 e 3
         zumbi[0] = new Zumbis(1, random.nextInt(3)+ 1);
         zumbi[0].setX(-283);
@@ -149,10 +150,11 @@ public class ProtejaSeuJardim implements GLEventListener {
 
     public void display(GLAutoDrawable drawable) {
         int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta;
+        
         for (z = 0; z <= aux1; z++) {
-            mX = x[z];
+            mX = x[z]; //Coordenadas das Cartas
             mY = y[z];
-            mXPlanta = xPlanta[z];
+            mXPlanta = xPlanta[z]; //Coordenadas da planta no gramado
             mYPlanta = yPlanta[z];
 
             GL gl = drawable.getGL();
@@ -161,31 +163,19 @@ public class ProtejaSeuJardim implements GLEventListener {
             gl.glLoadIdentity();
             desenhaMarcacoes(gl);
             //Deteccao da carta que escolheu
-            if ((mX >= -400) && (mX <= -320) && (mY <= 300) && (mY >= -300) /*&& (mX != 0) && (mY != 0)*/) {
+            if ((mX >= -400) && (mX <= -320) && (mY <= 300) && (mY >= -300)) {
 
                 if ((mY <= 300) && (mY > 150)) {//Carta referente a planta 1 - NORMAL
-                    //Plantas(1, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
-                    //desenhaPlantas(gl, -290, 250, 1);
                     tipoPlanta = 1;
-                    //yPlanta[aux2] = 0;
                 }
                 if ((mY <= 150) && (mY > 0)) {//Carta referente a planta 2 - GELO
-                    //Plantas(2, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );
-                    //desenhaPlantas(gl, -290, 50, 2);
                     tipoPlanta = 2;
-                    //yPlanta[aux2] = 0;
                 }
                 if ((mY <= 0) && (mY > -150)) {//Carta referente a planta 3 - FOGO
-                    //Plantas(3, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
-                    //desenhaPlantas(gl, -210, -150, 3);
                     tipoPlanta = 3;
-                    //yPlanta[aux2] = 0;
                 }
                 if ((mY <= -150) && (mY >= -300)) {//Carta referente a planta 4 - TERRA
-                    //Plantas(4, 230/70/-170, -350/-270/-190/-110/-30/50/130/210/290/370 );                
-                    //desenhaPlantas(gl, -290, 50, 4);
                     tipoPlanta = 4;
-                    //yPlanta[aux2] = 0;
                 }
             }
             /*
@@ -198,29 +188,45 @@ public class ProtejaSeuJardim implements GLEventListener {
                 desenhaPlantas(gl, planta[desenhaPlanta].getX(), planta[desenhaPlanta].getY(), planta[desenhaPlanta].getTipo());
             }
             
+            
+            for (desenhaPlanta=0; desenhaPlanta < contadorPlanta; desenhaPlanta++){
+                for(int k=0; k<3;k++){                    
+                    if(planta[desenhaPlanta].getY() == zumbi[k].getY())
+                        planta[desenhaPlanta].atirar(zumbi[k]);
+                }
+                desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
+            }        
+                        
+            //Estes sao os desenhos das cartas
             desenhaPlantas(gl, -370, 250, 1);
             desenhaPlantas(gl, -370, 100, 2);
             desenhaPlantas(gl, -370, -50, 3);
             desenhaPlantas(gl, -370, -180, 4);
-            if (controleSol == 1){
-                desenhaSol(gl, xSol, ySol);
-            }
+            
             desenhaZumbi(gl, zumbi[0].getX(), zumbi[0].getY(), zumbi[0].getTipo());
             desenhaZumbi(gl, zumbi[1].getX(), zumbi[1].getY(), zumbi[1].getTipo());
             desenhaZumbi(gl, zumbi[2].getX(), zumbi[2].getY(), zumbi[2].getTipo());
             zumbi[0].caminhar();
+            
+            //if (controleSol == 1){ ---> TIREI a variavel controleSol porque ela eh sempre igual a 1
+            desenhaSol(gl, xSol, ySol);
+            //para mostrar a quantidade de sois no jogo
+            desenhaSol(gl, 340, 250);
+            //}
             //Atualiza Sol
             contadorSol++;
-            ySol -= 3;
+            ySol -= 3; //O Sol ira parar em y=0
             //Comando para um novo solzinho cair
             if (contadorSol > 100){
                 contadorSol = 0;
+                sois += 50;//Aumento a quantidade de sois totais no jogo                
+                //Um sol, apos cair, devera ficar no chao ate que o proximo caia. Sempre dois sois ficarao na tela
                 xSol = random.nextInt(680) - 300;
                 ySol = 300;
             }
             //Atualiza o que estah no frame buffer e manda pra tela
             gl.glFlush();
-        }
+        }//fim_for (z = 0; z <= aux1; z++)
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
@@ -247,7 +253,34 @@ public class ProtejaSeuJardim implements GLEventListener {
         
         System.out.println("xFinal,yFinal=" + (localX * 80 - 50) + "," + (localY * 200 + 50));
         planta[contadorPlanta] = new Plantas(tipo, (localX * 80 - 50), (localY * 200 + 50));
+        //Toda planta lanca um projetil do mesmo tipo da planta!
+        //projetil[contadorPlanta] = new Projetil(50, -210);
         contadorPlanta++;
+    }
+    
+    private void desenhaProjetil(GL gl, int tipo, int x, int y){
+        switch(tipo){
+            case 1:
+                gl.glColor3f(0.0f, 0.5f, 0.0f);
+                gl.glBegin(gl.GL_POINTS);
+                desenhaCirculo(gl, x, y, 10);
+                gl.glEnd(); break;
+            case 2:
+                gl.glColor3f(0.5f, 0.5f, 1.0f);
+                gl.glBegin(gl.GL_POINTS);
+                desenhaCirculo(gl, x, y, 10);
+                gl.glEnd(); break;
+            case 3:
+                gl.glColor3f(0.9f, 0.0f, 0.0f);
+                gl.glBegin(gl.GL_POINTS);
+                desenhaCirculo(gl, x, y, 10);
+                gl.glEnd(); break;
+            case 4:
+                gl.glColor3f(0.7f, 0.5f, 0.3f);
+                gl.glBegin(gl.GL_POINTS);
+                desenhaCirculo(gl, x, y, 10);
+                gl.glEnd(); break;
+        }
     }
     
     //x e y sao as coordenadas do ponto que liga a cabeca ao resto do corpo da planta

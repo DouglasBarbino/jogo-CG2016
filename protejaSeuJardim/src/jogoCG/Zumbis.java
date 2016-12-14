@@ -35,9 +35,9 @@ public class Zumbis {
         //Lembre-se que o canto superior direito da tela tem coordenadas (400,300) em OpenGL
         if(alturaZ >= 1 || alturaZ <= 3){            
             switch(alturaZ){ 
-                case 1: this.y = 230; break; //1 fileira: 300 -> 100 -> 70 pixeis abaixo do canto superior direito
-                case 2: this.y = 30; break; //2 fileira: 100-> - 100
-                case 3: this.y = -170; break; //3 fileira: -100 -> -300
+                case 1: this.y = 250; break; //1 fileira: 300 -> 100 -> 70 pixeis abaixo do canto superior direito
+                case 2: this.y = 50; break; //2 fileira: 100-> - 100
+                case 3: this.y = -150; break; //3 fileira: -100 -> -300
             }//fim_switch
         }//fim_if
         else{
@@ -49,25 +49,25 @@ public class Zumbis {
         
             case 1: //Zumbi Basico
                 this.vida = 8;
-                this.velocidade = 1;
+                this.velocidade = 2;
                 this.ataque = 1;
                 break;
                 
             case 2: //Zumbi Cone
                 this.vida = 16;
-                this.velocidade = 1;
+                this.velocidade = 2;
                 this.ataque = 2;
                 break;
                 
             case 3: //Zumbi Balde
                 this.vida = 30;
-                this.velocidade = 2;
+                this.velocidade = 3;
                 this.ataque = 4;
                 break;
             
             default: //zumbi bascio
                 this.vida = 8;
-                this.velocidade = 1;
+                this.velocidade = 2;
                 this.ataque = 1;
                 break;
         }//fim_switch        
@@ -77,7 +77,7 @@ public class Zumbis {
         
         //Classe para desenhar o zumbi se movimentando
         this.x -= this.velocidade; //Vai do ponto
-        try {Thread.sleep(200); /*O tempo para o zumbi realizar outra caminhada eh de 2 segundos*/} 
+        try {Thread.sleep(300);} 
         catch (InterruptedException e) {System.out.println(e);}
     }//fim_caminhar()
     
@@ -95,12 +95,16 @@ public class Zumbis {
         //apaga desenho do zumbi
     }//fim_morrer
     
-    void setVelocidade(int i){
+    public void setVelocidade(int i){
         
         velocidade += i; 
     }//fim_setVelocidade
     
-    void setX(int i){
+    public int getVelocidade(){
+        return this.velocidade;
+    }//fim_getVelocidade()
+    
+    public void setX(int i){
         
         this.x += i;
     }//fim_setX
