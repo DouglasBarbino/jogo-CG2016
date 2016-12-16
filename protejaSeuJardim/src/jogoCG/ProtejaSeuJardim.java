@@ -291,7 +291,9 @@ public class ProtejaSeuJardim implements GLEventListener {
             for(chegouFim = 0; chegouFim < contadorPlanta; chegouFim++){
                     planta[chegouFim] = null;
                 }
-            System.out.println("!!!FIM DE JOGO!!!");
+            System.out.println("!!!FIM DE JOGO!!! Pontuacao: "+zumbisDerrotados);
+            try {Thread.sleep(1000);} 
+            catch (InterruptedException e) {System.out.println(e);}
             gl.glFlush();
         }
     }
