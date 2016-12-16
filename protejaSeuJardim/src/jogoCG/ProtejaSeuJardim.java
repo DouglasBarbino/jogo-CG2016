@@ -35,6 +35,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int tipoPlanta = 0;
     private static int contadorPlanta = 0, contZ = 0, contadorZumbi = 0;
     private static int contadorSol = 0;
+    private static int geraZumbi = 0;
     private static int xSol = 0;
     private static int ySol = 300;
     private static int sois = 0, zumbisDerrotados = 0;
@@ -238,6 +239,15 @@ public class ProtejaSeuJardim implements GLEventListener {
                 //Um sol, apos cair, devera ficar no chao ate que o proximo caia. Sempre dois sois ficarao na tela
                 xSol = random.nextInt(680) - 300;
                 ySol = 300;
+            }
+            //Atualiza a geracao de zumbi
+            geraZumbi++;
+            //Comando para um novo zumbi ser gerado
+            if (geraZumbi > 200){
+                //Tipo e posicao aleatorios
+                zumbi[contadorZumbi] = new Zumbis(random.nextInt(3)+ 1, random.nextInt(3)+ 1);
+                geraZumbi = 0;
+                contadorZumbi++;
             }
             //Atualiza o que estah no frame buffer e manda pra tela
             gl.glFlush();
