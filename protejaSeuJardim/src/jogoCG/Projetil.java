@@ -19,11 +19,11 @@ public class Projetil {
     public void Lancar(int ataque, Zumbis z){
         
         if(this.x >= z.getX()){
-            System.out.println("PROJETIL = " + this.x+" ZUMBI = "+ z.getX());
             z.morrer(ataque);
             this.x = aux;
-        }
-        this.x += 10; 
+            System.out.println("Ataque Planta: " +z.getVida());
+        }else
+            this.x += 40; 
     }
     
     public void setX(int i){

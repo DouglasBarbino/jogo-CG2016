@@ -19,6 +19,7 @@ public class Zumbis {
     int velocidade;
     int ataque;
     int tipo;
+    int morto; //variavel que diz se um zumbi morreu ou nao
     int x = 403, y = 0; //Da a posicao do zumbi em determinado instante.
     //Lembre-se que o canto superior direito tem coordenadas (400,300) em OpenGL
     //O zumbi sempre inicia "escondido" no lado extremo DIREITO da tela.
@@ -51,24 +52,28 @@ public class Zumbis {
                 this.vida = 8;
                 this.velocidade = 2;
                 this.ataque = 1;
+                this.morto = 0;
                 break;
                 
             case 2: //Zumbi Cone
                 this.vida = 16;
                 this.velocidade = 2;
                 this.ataque = 2;
+                this.morto = 0;
                 break;
                 
             case 3: //Zumbi Balde
-                this.vida = 30;
+                this.vida = 24;
                 this.velocidade = 3;
                 this.ataque = 4;
+                this.morto = 0;
                 break;
             
             default: //zumbi bascio
                 this.vida = 8;
                 this.velocidade = 2;
                 this.ataque = 1;
+                this.morto = 0;
                 break;
         }//fim_switch        
     }//fim_Zumbis()
@@ -82,22 +87,32 @@ public class Zumbis {
     }//fim_caminhar()
     
     public void atacar(Plantas p){
+        int aux = this.velocidade;
         
-        if(this.x == p.getX() && this.y == p.getY())
-            p.vida -= this.ataque;
+        if(this.x <= p.getX()+60){
+            while(p.getMorta() != 1){
+                System.out.println("Ataque Zumbi: " +p.getVida());
+                this.velocidade = 0;
+                p.morrer(this.ataque);
+                try {Thread.sleep(500);} 
+                catch (InterruptedException e) {System.out.println(e);}
+            }
+            this.velocidade = aux;
+        }
     }//fim_atacar
     
     public void morrer(int i){
         
-        if(this.vida != 0){
+        if(this.vida > 0){
             this.vida -= i;
-        }//fim_if, zumbi morreu
-        //apaga desenho do zumbi
+        }else{
+            this.morto = 1;
+        }
     }//fim_morrer
     
     public void setVelocidade(int i){
         
-        velocidade += i; 
+        this.velocidade += i; 
     }//fim_setVelocidade
     
     public int getVelocidade(){
@@ -122,5 +137,13 @@ public class Zumbis {
     public int getTipo(){
         
         return this.tipo;
-    }//fim_getX()
+    }//fim_getTipo()
+    
+    public int getMorto(){
+        return this.morto;
+    }
+    
+    public int getVida(){
+        return this.vida;
+    }//fim_getVida();
 }//fim_class_Zumbis

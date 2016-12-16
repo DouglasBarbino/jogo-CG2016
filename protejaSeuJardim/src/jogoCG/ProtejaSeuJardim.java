@@ -33,11 +33,11 @@ public class ProtejaSeuJardim implements GLEventListener {
     //private static Projetil[] projetil;
     private static int geraPlanta = 0;
     private static int tipoPlanta = 0;
-    private static int contadorPlanta = 0;
+    private static int contadorPlanta = 0, contZ = 0, contadorZumbi = 0;
     private static int contadorSol = 0;
     private static int xSol = 0;
     private static int ySol = 300;
-    private static int sois = 0;
+    private static int sois = 0, zumbisDerrotados = 0;
     //private static int controleSol = 1;
     //Inicializacao da classe randomica
     private static Random random = new Random();
@@ -118,6 +118,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         zumbi[1].setX(-203);
         zumbi[2] = new Zumbis(3, random.nextInt(3)+ 1);
         zumbi[2].setX(-123);
+        contadorZumbi = 3;
         
         //Sorteia uma coordenada para o solzinho entre -300 e 380
         xSol = random.nextInt(680) - 300;
@@ -149,7 +150,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     }
 
     public void display(GLAutoDrawable drawable) {
-        int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta;
+        int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta, desenhaZumbi;
         
         for (z = 0; z <= aux1; z++) {
             mX = x[z]; //Coordenadas das Cartas
@@ -188,14 +189,22 @@ public class ProtejaSeuJardim implements GLEventListener {
                 desenhaPlantas(gl, planta[desenhaPlanta].getX(), planta[desenhaPlanta].getY(), planta[desenhaPlanta].getTipo());
             }
             
-            
-            for (desenhaPlanta=0; desenhaPlanta < contadorPlanta; desenhaPlanta++){
-                for(int k=0; k<3;k++){                    
-                    if(planta[desenhaPlanta].getY() == zumbi[k].getY())
-                        planta[desenhaPlanta].atirar(zumbi[k]);
-                }
-                desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
-            }        
+            for (desenhaPlanta = 0; desenhaPlanta < contadorPlanta; desenhaPlanta++) {
+                zumbiMaisProx(planta[desenhaPlanta].getY());
+                planta[desenhaPlanta].atirar(zumbi[contZ]);
+                if (zumbi[contZ].getMorto() == 1) {
+                    zumbi[contZ] = null;
+                    ordenaVetorZ(zumbi, contZ);
+                    zumbisDerrotados++; //Conta a pontuacao do jogador
+                } else {
+                    zumbi[contZ].atacar(planta[desenhaPlanta]);//verifica se zumbi chegou na planta dentro do metodo
+                    desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
+                    if (planta[desenhaPlanta].getMorta() == 1) {
+                        planta[desenhaPlanta] = null;
+                        ordenaVetorP(planta, desenhaPlanta);
+                    }
+                }               
+            }
                         
             //Estes sao os desenhos das cartas
             desenhaPlantas(gl, -370, 250, 1);
@@ -203,10 +212,10 @@ public class ProtejaSeuJardim implements GLEventListener {
             desenhaPlantas(gl, -370, -50, 3);
             desenhaPlantas(gl, -370, -180, 4);
             
-            desenhaZumbi(gl, zumbi[0].getX(), zumbi[0].getY(), zumbi[0].getTipo());
-            desenhaZumbi(gl, zumbi[1].getX(), zumbi[1].getY(), zumbi[1].getTipo());
-            desenhaZumbi(gl, zumbi[2].getX(), zumbi[2].getY(), zumbi[2].getTipo());
-            zumbi[0].caminhar();
+            for(desenhaZumbi = 0; desenhaZumbi < contadorZumbi; desenhaZumbi++){
+            desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), zumbi[desenhaZumbi].getTipo());
+            }
+            if(zumbi[0] != null){zumbi[0].caminhar();}
             
             //if (controleSol == 1){ ---> TIREI a variavel controleSol porque ela eh sempre igual a 1
             desenhaSol(gl, xSol, ySol);
@@ -228,6 +237,36 @@ public class ProtejaSeuJardim implements GLEventListener {
             gl.glFlush();
         }//fim_for (z = 0; z <= aux1; z++)
     }
+    
+    public void ordenaVetorZ(Zumbis [] z, int posAtual){
+        int nz;
+        for(nz = posAtual; nz < (contadorZumbi-1); nz++){
+            planta[nz] = planta[nz+1];
+        }
+        contadorZumbi--;
+    }
+    
+    public void ordenaVetorP(Plantas [] p, int posAtual){
+        int np;
+        for(np = posAtual; np < (contadorPlanta-1); np++){
+            planta[np] = planta[np+1];
+        }
+        contadorPlanta--;
+    }
+    
+    public void zumbiMaisProx(int yPlant){
+        int k, xAux = 400;
+        contZ = 0;
+        
+        for(k = 0; k < 3; k++){
+            if(yPlant == zumbi[k].getY()){
+                if(xAux > zumbi[k].getX()){
+                    xAux = zumbi[k].getX();
+                    contZ = k;
+                }
+            }
+        }
+    }//fim_zumbiMaisProx()
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
@@ -326,7 +365,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     //x e y sao as coordenadas do ponto que liga a cabeca ao resto do corpo do zumbi
     //tipo serve para definir o poder da zumbi, sendo:
     //1=normal, 2=cone, 3=balde
-    private void desenhaZumbi(GL gl, int x, int y, int tipo){
+    private void desenhaZumbis(GL gl, int x, int y, int tipo){
         gl.glColor3f(0.3f, 0.3f, 0.3f);
         gl.glBegin(gl.GL_POINTS);
         //Cabeca e corpo

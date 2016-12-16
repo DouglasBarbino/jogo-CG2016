@@ -20,8 +20,9 @@ public class Plantas {
     int ataque;
     int custo;
     int tipo;
-    int congelar = 0;
-    int afastar = 0;
+    int congelar;
+    int afastar;
+    int morta;
     int x, y; //x e y são as coordenadas da planta
     Projetil projetil;
     
@@ -38,52 +39,68 @@ public class Plantas {
         
         switch(tipo){
             case 1: //planta normal
-                this.vida = 4;
+                this.vida = 8;
                 this.ataque = 1;
                 this.custo = 100;
+                this.congelar = 0;
+                this.afastar = 0;
+                this.morta = 0;
                 break;
                 
             case 2: //planta de gelo
-                this.vida = 4;
+                this.vida = 8;
                 this.ataque = 1;
                 this.custo = 150;
                 this.congelar = 1;
+                this.afastar = 0;
+                this.morta = 0;
                 break;
                 
             case 3: //planta de fogo
-                this.vida = 8;
-                this.ataque = 3;
+                this.vida = 16;
+                this.ataque = 2;
                 this.custo = 200;
+                this.congelar = 0;
+                this.afastar = 0;
+                this.morta = 0;
                 break;
                 
             case 4: //planta de terra
-                this.vida = 8;
-                this.ataque = 4;
+                this.vida = 16;
+                this.ataque = 2;
                 this.custo = 225;
+                this.congelar = 0;
                 this.afastar = 1;
+                this.morta = 0;
                 break;
                 
             default: //planta normal
-                this.vida = 4;
+                this.vida = 8;
                 this.ataque = 1;
                 this.custo = 100;
+                this.congelar = 0;
+                this.afastar = 0;
+                this.morta = 0;
                 break;
         }//fim_switch
     }//fim_Plantas()
     
     public void atirar(Zumbis z){
         this.projetil.Lancar(this.ataque, z);
-        if((this.congelar == 1) && (z.getVelocidade() > 1)) {
+        if((this.congelar == 1) && (z.getVelocidade() > 1) && (z.getX() <= this.projetil.getX())) {
             z.setVelocidade(-1);
         }
-        if((this.afastar == 1) && (z.getX() < 400)) {
-            z.setX(-5);
+        if((this.afastar == 1) && (z.getX() < 400) && (z.getX() <= this.projetil.getX())) {
+            z.setX(5);
         }
     }//fim_atirar()
     
-    public void morrer(){
+    public void morrer(int i){
         
-        //apaga desenho da planta
+        if(this.vida == 0)
+            this.morta = 1;
+        else
+            this.vida -= i;
     }//fim_morrer()
     
     public int getX(){
@@ -108,5 +125,13 @@ public class Plantas {
      
     public Projetil getProjetil(){
         return this.projetil;
-    }
+    }//fim_getProjetil()
+    
+    public int getMorta(){
+        return this.morta;
+    }//fim_getMorta()
+    
+    public int getVida(){
+        return this.vida;
+    }//fim_getVida()
 }//fim_class_Plantas
