@@ -191,19 +191,25 @@ public class ProtejaSeuJardim implements GLEventListener {
             
             for (desenhaPlanta = 0; desenhaPlanta < contadorPlanta; desenhaPlanta++) {
                 zumbiMaisProx(planta[desenhaPlanta].getY());
-                planta[desenhaPlanta].atirar(zumbi[contZ]);
-                if (zumbi[contZ].getMorto() == 1) {
-                    zumbi[contZ] = null;
-                    ordenaVetorZ(zumbi, contZ);
-                    zumbisDerrotados++; //Conta a pontuacao do jogador
-                } else {
-                    zumbi[contZ].atacar(planta[desenhaPlanta]);//verifica se zumbi chegou na planta dentro do metodo
-                    desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
-                    if (planta[desenhaPlanta].getMorta() == 1) {
-                        planta[desenhaPlanta] = null;
-                        ordenaVetorP(planta, desenhaPlanta);
+                //Como o contZ pode nao ter sido atualizado, eh necessario verificar,
+                //caso contrario qualquer projetil vai acertar o primeiro zumbi
+                if (contadorZumbi > 0){
+                    if (planta[desenhaPlanta].getY() == zumbi[contZ].getY()) {
+                        planta[desenhaPlanta].atirar(zumbi[contZ]);
                     }
-                }               
+                    if (zumbi[contZ].getMorto() == 1) {
+                        zumbi[contZ] = null;
+                        ordenaVetorZ(zumbi, contZ);
+                        zumbisDerrotados++; //Conta a pontuacao do jogador
+                    } else {
+                        zumbi[contZ].atacar(planta[desenhaPlanta]);//verifica se zumbi chegou na planta dentro do metodo
+                        desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
+                        if (planta[desenhaPlanta].getMorta() == 1) {
+                            planta[desenhaPlanta] = null;
+                            ordenaVetorP(planta, desenhaPlanta);
+                        }
+                    }      
+                }         
             }
                         
             //Estes sao os desenhos das cartas
@@ -213,7 +219,7 @@ public class ProtejaSeuJardim implements GLEventListener {
             desenhaPlantas(gl, -370, -180, 4);
             
             for(desenhaZumbi = 0; desenhaZumbi < contadorZumbi; desenhaZumbi++){
-            desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), zumbi[desenhaZumbi].getTipo());
+                desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), zumbi[desenhaZumbi].getTipo());
             }
             if(zumbi[0] != null){zumbi[0].caminhar();}
             
@@ -238,14 +244,16 @@ public class ProtejaSeuJardim implements GLEventListener {
         }//fim_for (z = 0; z <= aux1; z++)
     }
     
+    //Conserta o vetor de zumbis quando algum morre
     public void ordenaVetorZ(Zumbis [] z, int posAtual){
         int nz;
         for(nz = posAtual; nz < (contadorZumbi-1); nz++){
-            planta[nz] = planta[nz+1];
+            zumbi[nz] = zumbi[nz+1];
         }
         contadorZumbi--;
     }
     
+    //Conserta o vetor de plantas quando alguma morre
     public void ordenaVetorP(Plantas [] p, int posAtual){
         int np;
         for(np = posAtual; np < (contadorPlanta-1); np++){
@@ -254,11 +262,12 @@ public class ProtejaSeuJardim implements GLEventListener {
         contadorPlanta--;
     }
     
+    //Determina qual zumbi sera atingido pelos projeteis das plantas
     public void zumbiMaisProx(int yPlant){
         int k, xAux = 400;
         contZ = 0;
         
-        for(k = 0; k < 3; k++){
+        for(k = 0; k < contadorZumbi; k++){
             if(yPlant == zumbi[k].getY()){
                 if(xAux > zumbi[k].getX()){
                     xAux = zumbi[k].getX();
