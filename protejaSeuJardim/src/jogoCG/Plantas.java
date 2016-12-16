@@ -68,7 +68,7 @@ public class Plantas {
             case 4: //planta de terra
                 this.vida = 16;
                 this.ataque = 2;
-                this.custo = 225;
+                this.custo = 250;
                 this.congelar = 0;
                 this.afastar = 1;
                 this.morta = 0;
@@ -91,7 +91,7 @@ public class Plantas {
             z.setVelocidade(-1);
         }
         if((this.afastar == 1) && (z.getX() < 400) && (z.getX() <= this.projetil.getX())) {
-            z.setX(5);
+            z.setX(10);
         }
     }//fim_atirar()
     
@@ -134,4 +134,8 @@ public class Plantas {
     public int getVida(){
         return this.vida;
     }//fim_getVida()
+    
+    public int getCusto(){
+        return this.custo;
+    }
 }//fim_class_Plantas

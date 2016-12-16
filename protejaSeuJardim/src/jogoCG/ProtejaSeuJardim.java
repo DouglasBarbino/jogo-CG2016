@@ -38,7 +38,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int geraZumbi = 0;
     private static int xSol = 0;
     private static int ySol = 300;
-    private static int sois = 0, zumbisDerrotados = 0;
+    private static int sois = 100, zumbisDerrotados = 0, haSois = 0, fimDeJogo = 0;
     //private static int controleSol = 1;
     //Inicializacao da classe randomica
     private static Random random = new Random();
@@ -50,6 +50,9 @@ public class ProtejaSeuJardim implements GLEventListener {
         frame.add(canvas);
         frame.setSize(800, 600);
         final Animator animator = new Animator(canvas);
+        
+        System.out.println("SOIS: "+sois);
+        
         frame.addWindowListener(new WindowAdapter() {
 
             @Override
@@ -79,23 +82,27 @@ public class ProtejaSeuJardim implements GLEventListener {
                     if ((e.getX() - 391) <= -320) {
                         x[count1] = e.getX() - 391; //centralizando
                         y[count1] = e.getY() * -1 + 280; //invertendo e centralizando
-                        System.out.println("x,y=" + x[count1] + "," + y[count1]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                        //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                         aux1 = count1;
                         count1++;
-                        //Para poder gerar uma planta nova
+                        //Para poder gerar uma planta nova, DESDE QUE HAJA SOIS
                         if (geraPlanta == 0)
                             geraPlanta++;
                     }
                     else{
                         //Apenas pega essa coordenada caso for gerar uma planta nova
-                        if (geraPlanta == 1){
+                        if (geraPlanta == 1 ){
+                            if(haSois == 1){
                             xPlanta[count2] = e.getX() - 391; //centralizando
                             yPlanta[count2] = e.getY() * -1 + 280; //invertendo e centralizando
-                            System.out.println("xPlanta,yPlanta=" + xPlanta[count2] + "," + yPlanta[count2]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                            //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                             aux2 = count2;
                             count2++;
                             geraPlanta--;
+                            haSois--;
                             criaPlanta(tipoPlanta, xPlanta[count2 - 1], yPlanta[count2 - 1]);
+                            }else
+                                System.out.println("SEM SOIS SUFICIENTES!!!");
                         }
                     }
                     canvas.display();
@@ -114,16 +121,16 @@ public class ProtejaSeuJardim implements GLEventListener {
         
         //random.nextInt(3)+ 1 gera numeros entre 1 e 3
         zumbi[0] = new Zumbis(1, random.nextInt(3)+ 1);
-        zumbi[0].setX(-283);
+        zumbi[0].setX(-720);
         zumbi[1] = new Zumbis(2, random.nextInt(3)+ 1);
-        zumbi[1].setX(-203);
+        //zumbi[1].setX(-203);
         zumbi[2] = new Zumbis(3, random.nextInt(3)+ 1);
-        zumbi[2].setX(-123);
+        //zumbi[2].setX(-123);
         contadorZumbi = 3;
         
         //Sorteia uma coordenada para o solzinho entre -300 e 380
         xSol = random.nextInt(680) - 300;
-    }
+    }//fim_main()
 
     public void init(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
@@ -151,107 +158,142 @@ public class ProtejaSeuJardim implements GLEventListener {
     }
 
     public void display(GLAutoDrawable drawable) {
-        int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta, desenhaZumbi;
+        int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta, desenhaZumbi, chegouFim;
         
-        for (z = 0; z <= aux1; z++) {
-            mX = x[z]; //Coordenadas das Cartas
-            mY = y[z];
-            mXPlanta = xPlanta[z]; //Coordenadas da planta no gramado
-            mYPlanta = yPlanta[z];
+        if (fimDeJogo != 1) {
+            for (z = 0; z <= aux1; z++) {
+                mX = x[z]; //Coordenadas das Cartas
+                mY = y[z];
+                mXPlanta = xPlanta[z]; //Coordenadas da planta no gramado
+                mYPlanta = yPlanta[z];
 
+                GL gl = drawable.getGL();
+                //Aqui que realmente manda desenhar a cor de fundo
+                gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+                gl.glLoadIdentity();
+                desenhaMarcacoes(gl);
+                
+                //Deteccao da carta que escolheu
+                if ((mX >= -400) && (mX <= -320) && (mY <= 300) && (mY >= -300)) {
+
+                    if ((mY <= 300) && (mY > 150) && (sois >= 100)) {//Carta referente a planta 1 - NORMAL
+                        tipoPlanta = 1;
+                        haSois = 1;
+                    }
+                    if ((mY <= 150) && (mY > 0) && (sois >= 150)) {//Carta referente a planta 2 - GELO
+                        tipoPlanta = 2;
+                        haSois = 1;
+                    }
+                    if ((mY <= 0) && (mY > -150) && (sois >= 200)) {//Carta referente a planta 3 - FOGO
+                        tipoPlanta = 3;
+                        haSois = 1;
+                    }
+                    if ((mY <= -150) && (mY >= -300) && (sois >= 250)) {//Carta referente a planta 4 - TERRA
+                        tipoPlanta = 4;
+                        haSois = 1;
+                    }
+                }
+                /*
+            * desenhaLinha(gl, -400, 150, -320, 150);
+            * desenhaLinha(gl, -400, 0, -320, 0);
+            * desenhaLinha(gl, -400, -150, -320, -150);
+                 */
+
+                for (desenhaPlanta = 0; desenhaPlanta < contadorPlanta; desenhaPlanta++) {
+                    desenhaPlantas(gl, planta[desenhaPlanta].getX(), planta[desenhaPlanta].getY(), planta[desenhaPlanta].getTipo());
+                }
+
+                for (desenhaPlanta = 0; desenhaPlanta < contadorPlanta; desenhaPlanta++) {
+                    zumbiMaisProx(planta[desenhaPlanta].getY());
+                    //Como o contZ pode nao ter sido atualizado, eh necessario verificar,
+                    //caso contrario qualquer projetil vai acertar o primeiro zumbi
+                    if (contadorZumbi > 0) {
+                        if (planta[desenhaPlanta].getY() == zumbi[contZ].getY()) {
+                            planta[desenhaPlanta].atirar(zumbi[contZ]);
+                        }
+                        if (zumbi[contZ].getMorto() == 1) {
+                            zumbi[contZ] = null;
+                            ordenaVetorZ(zumbi, contZ);
+                            zumbisDerrotados++; //Conta a pontuacao do jogador
+                        } else {
+                            zumbi[contZ].atacar(planta[desenhaPlanta]);//verifica se zumbi chegou na planta dentro do metodo
+                            desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
+                            if (planta[desenhaPlanta].getMorta() == 1) {
+                                planta[desenhaPlanta] = null;
+                                ordenaVetorP(planta, desenhaPlanta);
+                            }
+                        }
+                    }
+                }
+
+                //Estes sao os desenhos das cartas
+                desenhaPlantas(gl, -370, 250, 1);
+                desenhaPlantas(gl, -370, 100, 2);
+                desenhaPlantas(gl, -370, -50, 3);
+                desenhaPlantas(gl, -370, -180, 4);
+
+                for (desenhaZumbi = 0; desenhaZumbi < contadorZumbi; desenhaZumbi++) {
+                    desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), zumbi[desenhaZumbi].getTipo());
+                    zumbi[desenhaZumbi].caminhar();
+                }
+
+                //if (controleSol == 1){ ---> TIREI a variavel controleSol porque ela eh sempre igual a 1
+                desenhaSol(gl, xSol, ySol);
+                //para mostrar a quantidade de sois no jogo
+                desenhaSol(gl, 340, 250);
+                //}
+                //Atualiza Sol
+                contadorSol++;
+                ySol -= 25; //O Sol ira parar em y=0
+                //Comando para um novo solzinho cair
+                if (contadorSol == 12) {
+                    contadorSol = 0;
+                    sois += 50;//Aumento a quantidade de sois totais no jogo                
+                    //Um sol, apos cair, devera ficar no chao ate que o proximo caia. Sempre dois sois ficarao na tela
+                    xSol = random.nextInt(680) - 300;
+                    ySol = 300;
+                    System.out.println("SOIS: " + sois);
+                }
+
+                //Atualiza a geracao de zumbi
+                geraZumbi++;
+                //Comando para um novo zumbi ser gerado
+                if (geraZumbi == 48) {//Sera um multiplo do CONTADORSOL!!!
+                    //Tipo e posicao aleatorios
+                    zumbi[contadorZumbi] = new Zumbis(random.nextInt(3) + 1, random.nextInt(3) + 1);
+                    geraZumbi = 0;
+                    contadorZumbi++;
+                }
+                
+                //Agora verificaremos se o zumbi chegou na linha final do jogo
+                for(chegouFim = 0; chegouFim < contadorZumbi; chegouFim++){
+                    System.out.println("X do Zumbi: "+zumbi[chegouFim].getX());
+                    if(zumbi[chegouFim].getX() <= -340)
+                        fimDeJogo = 1;
+                }
+                
+                //Atualiza o que estah no frame buffer e manda pra tela
+                gl.glFlush();
+            }//fim_for (z = 0; z <= aux1; z++)
+        }
+        else{
             GL gl = drawable.getGL();
             //Aqui que realmente manda desenhar a cor de fundo
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
             gl.glLoadIdentity();
             desenhaMarcacoes(gl);
-            //Deteccao da carta que escolheu
-            if ((mX >= -400) && (mX <= -320) && (mY <= 300) && (mY >= -300)) {
-
-                if ((mY <= 300) && (mY > 150)) {//Carta referente a planta 1 - NORMAL
-                    tipoPlanta = 1;
+                
+            //Deletaremos as plantas e zumbis
+            for(chegouFim = 0; chegouFim < contadorZumbi; chegouFim++){
+                    zumbi[chegouFim] = null;
                 }
-                if ((mY <= 150) && (mY > 0)) {//Carta referente a planta 2 - GELO
-                    tipoPlanta = 2;
+            
+            for(chegouFim = 0; chegouFim < contadorPlanta; chegouFim++){
+                    planta[chegouFim] = null;
                 }
-                if ((mY <= 0) && (mY > -150)) {//Carta referente a planta 3 - FOGO
-                    tipoPlanta = 3;
-                }
-                if ((mY <= -150) && (mY >= -300)) {//Carta referente a planta 4 - TERRA
-                    tipoPlanta = 4;
-                }
-            }
-            /*
-            * desenhaLinha(gl, -400, 150, -320, 150);
-            * desenhaLinha(gl, -400, 0, -320, 0);
-            * desenhaLinha(gl, -400, -150, -320, -150);
-            */
-            
-            for (desenhaPlanta=0; desenhaPlanta < contadorPlanta; desenhaPlanta++){
-                desenhaPlantas(gl, planta[desenhaPlanta].getX(), planta[desenhaPlanta].getY(), planta[desenhaPlanta].getTipo());
-            }
-            
-            for (desenhaPlanta = 0; desenhaPlanta < contadorPlanta; desenhaPlanta++) {
-                zumbiMaisProx(planta[desenhaPlanta].getY());
-                //Como o contZ pode nao ter sido atualizado, eh necessario verificar,
-                //caso contrario qualquer projetil vai acertar o primeiro zumbi
-                if (contadorZumbi > 0){
-                    if (planta[desenhaPlanta].getY() == zumbi[contZ].getY()) {
-                        planta[desenhaPlanta].atirar(zumbi[contZ]);
-                    }
-                    if (zumbi[contZ].getMorto() == 1) {
-                        zumbi[contZ] = null;
-                        ordenaVetorZ(zumbi, contZ);
-                        zumbisDerrotados++; //Conta a pontuacao do jogador
-                    } else {
-                        zumbi[contZ].atacar(planta[desenhaPlanta]);//verifica se zumbi chegou na planta dentro do metodo
-                        desenhaProjetil(gl, planta[desenhaPlanta].getTipo(), planta[desenhaPlanta].getProjetil().getX(), planta[desenhaPlanta].getProjetil().getY());
-                        if (planta[desenhaPlanta].getMorta() == 1) {
-                            planta[desenhaPlanta] = null;
-                            ordenaVetorP(planta, desenhaPlanta);
-                        }
-                    }      
-                }         
-            }
-                        
-            //Estes sao os desenhos das cartas
-            desenhaPlantas(gl, -370, 250, 1);
-            desenhaPlantas(gl, -370, 100, 2);
-            desenhaPlantas(gl, -370, -50, 3);
-            desenhaPlantas(gl, -370, -180, 4);
-            
-            for(desenhaZumbi = 0; desenhaZumbi < contadorZumbi; desenhaZumbi++){
-                desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), zumbi[desenhaZumbi].getTipo());
-            }
-            if(zumbi[0] != null){zumbi[0].caminhar();}
-            
-            //if (controleSol == 1){ ---> TIREI a variavel controleSol porque ela eh sempre igual a 1
-            desenhaSol(gl, xSol, ySol);
-            //para mostrar a quantidade de sois no jogo
-            desenhaSol(gl, 340, 250);
-            //}
-            //Atualiza Sol
-            contadorSol++;
-            ySol -= 3; //O Sol ira parar em y=0
-            //Comando para um novo solzinho cair
-            if (contadorSol > 100){
-                contadorSol = 0;
-                sois += 50;//Aumento a quantidade de sois totais no jogo                
-                //Um sol, apos cair, devera ficar no chao ate que o proximo caia. Sempre dois sois ficarao na tela
-                xSol = random.nextInt(680) - 300;
-                ySol = 300;
-            }
-            //Atualiza a geracao de zumbi
-            geraZumbi++;
-            //Comando para um novo zumbi ser gerado
-            if (geraZumbi > 200){
-                //Tipo e posicao aleatorios
-                zumbi[contadorZumbi] = new Zumbis(random.nextInt(3)+ 1, random.nextInt(3)+ 1);
-                geraZumbi = 0;
-                contadorZumbi++;
-            }
-            //Atualiza o que estah no frame buffer e manda pra tela
+            System.out.println("!!!FIM DE JOGO!!!");
             gl.glFlush();
-        }//fim_for (z = 0; z <= aux1; z++)
+        }
     }
     
     //Conserta o vetor de zumbis quando algum morre
@@ -308,11 +350,11 @@ public class ProtejaSeuJardim implements GLEventListener {
         if (y > 100){
             localY++;
         }
-        
-        System.out.println("xFinal,yFinal=" + (localX * 80 - 50) + "," + (localY * 200 + 50));
+                
         planta[contadorPlanta] = new Plantas(tipo, (localX * 80 - 50), (localY * 200 + 50));
-        //Toda planta lanca um projetil do mesmo tipo da planta!
-        //projetil[contadorPlanta] = new Projetil(50, -210);
+        
+        sois -= planta[contadorPlanta].getCusto();
+        System.out.println("SOIS: "+sois);
         contadorPlanta++;
     }
     
