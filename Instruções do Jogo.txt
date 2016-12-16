@@ -1,0 +1,60 @@
+==========Instruções do Jogo "Proteja o Seu Jardim"==========
+
+Bem vindo ao jogo 'Proteja o seu Jardim'! Aqui, voce estara sobre um ataque de zumbis que desejam entrar em sua casa para poder devorá-lo.
+Apesar de nao possuirem cerebros, os danados estao invadindo seu jardim, evitando a porta da frente de sua casa.
+Mas nao se preocupe: as plantas estao a seu favor, e vao te ajudar a impedir que os zumbis entrem!
+Seu trabalho deve ser, somente, plantar as plantas em seu jardim, planejando sua defesa.
+Seu jardim eh composto de tres fileira com 9 colunas que podem ser plantadas. Para escolher uma planta, basta selecionar uma das cartas que estao presentes
+no lado extremo esquerdo da tela do seu jogo. Clique em uma carta e, posteriormente, em uma posiçao do seu jardim para planta-la.
+O intuito do jogo eh que voce consiga matar a maior quantidade de zumbis possiveis. 
+O jogo termina quando um zumbi conseguir chegar em sua casa, ou seja, do outro lado do gramado.
+Ha quatro tipos de plantas:
+
+1) Planta normal:
+	vida = 8;
+	ataque = 1;
+	custo = 100;
+	projeteis = lança projeteis normais
+	efeito especial = nenhum;
+2) Planta de Gelo:
+	vida = 8;
+        ataque = 1;
+        custo = 150;
+	projeteis = lança projeteis de gelo
+        efeito especial = congela os zumbis, retardando-os.
+3) Planta de Fogo:
+	vida = 16;
+        ataque = 2;
+        custo = 200;
+	projeteis = lança projeteis de fogo
+        efeito especial = nenhum, mas é mais forte;
+4) Planta de Terra:        
+        vida = 16;
+        ataque = 2;
+	projeteis = lança projeteis de pedra;
+        custo = 250;
+	efeito especial = afasta o zumbi quando os projeteis o atingem;
+Observe que todas as plantas tem um custo para serem plantadas. Ela precisam de sois para serem plantadas! 
+Os sois caem do ceu no decorrer do jogo. Cada sol que atinge o chao eh armazenado com o valor 50. 
+Seu Armazen de Sois sera mostrado no canto superior direito da tela do jogo.
+Para plantar uma planta, voce deve ter pelo menos o valor do custo da planta desejada em sois armazenados.
+Ao plantar uma planta, o seu custo sera retirado do seu armazenamento de sois. 
+Mais uma coisa: plantas lançam projeteis para atacar os zumbis, que podem ou nao conter efeitos sobre os mortos-vivos (veja item efeito especial acima).
+O ataque recebido pelo zumbi tirara de sua vida o valor referente ao ataque da planta. Um zumbi morrera (desta vez de verdade), quando sua vida chegar a 0.
+Ha tres tipos de zumbis:
+1) Zumbi Basico:
+	vida = 8;
+        velocidade = 2;
+        ataque = 1;
+2) Zumbi Cabeça de Cone:
+        vida = 16;
+        velocidade = 2;
+        ataque = 2;
+3)Zumbi Cabeça de Balde:
+	vida = 24;
+        velocidade = 3;
+        ataque = 4;
+Estes sao os zumbis. Observe que cada um tem uma quantia de vida, uma velocidade de caminhada e um ataque.
+Sim, os zumbis, se chegarem em suas plantas, irao causar danos nas mesmas, no valor de seu respectivo Ataque. 
+Sua plantinha so ira morrer quando sua vida chegar a ZERO!
+Mais um detalhe: quando um zumbi estiver devorando uma planta, o jogo ira dar pequenas travadas para que voce possa perceber o ataque, voltando ao normal quando a planta morrer.
