@@ -1,6 +1,8 @@
 package jogoCG;
 
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.j2d.TextRenderer;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -121,11 +123,11 @@ public class ProtejaSeuJardim implements GLEventListener {
         
         //random.nextInt(3)+ 1 gera numeros entre 1 e 3
         zumbi[0] = new Zumbis(1, random.nextInt(3)+ 1);
-        zumbi[0].setX(-720);
+        //zumbi[0].setX(-720);
         zumbi[1] = new Zumbis(2, random.nextInt(3)+ 1);
-        //zumbi[1].setX(-203);
+        zumbi[1].setX(20);
         zumbi[2] = new Zumbis(3, random.nextInt(3)+ 1);
-        //zumbi[2].setX(-123);
+        zumbi[2].setX(40);
         contadorZumbi = 3;
         
         //Sorteia uma coordenada para o solzinho entre -300 e 380
@@ -240,7 +242,6 @@ public class ProtejaSeuJardim implements GLEventListener {
                 //if (controleSol == 1){ ---> TIREI a variavel controleSol porque ela eh sempre igual a 1
                 desenhaSol(gl, xSol, ySol);
                 //para mostrar a quantidade de sois no jogo
-                desenhaSol(gl, 340, 250);
                 //}
                 //Atualiza Sol
                 contadorSol++;
@@ -267,11 +268,39 @@ public class ProtejaSeuJardim implements GLEventListener {
                 
                 //Agora verificaremos se o zumbi chegou na linha final do jogo
                 for(chegouFim = 0; chegouFim < contadorZumbi; chegouFim++){
-                    System.out.println("X do Zumbi: "+zumbi[chegouFim].getX());
+                    //System.out.println("X do Zumbi: "+zumbi[chegouFim].getX());
                     if(zumbi[chegouFim].getX() <= -340)
                         fimDeJogo = 1;
                 }
                 
+                //Escrita da quantidade de sois
+                
+                TextRenderer soisText = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                //Tamanho da tela
+                soisText.beginRendering(800, 600);
+                soisText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                //soisText.setSmoothing(true);
+
+                //DPoint pt = new DPoint(200, 200);
+                //sois.draw("Hello world!!", (int) (pt.x), (int) (pt.y));
+                //Ele nao segue as coordenadas do JOGL
+                soisText.draw("SOIS: " + sois, 200, 550);
+                soisText.endRendering();
+                
+                TextRenderer pontuacaoText = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                //Tamanho da tela
+                pontuacaoText.beginRendering(800, 600);
+                pontuacaoText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                //pontuacaoText.setSmoothing(true);
+
+                //DPoint pt = new DPoint(200, 200);
+                //sois.draw("Hello world!!", (int) (pt.x), (int) (pt.y));
+                pontuacaoText.draw("PONTUACAO: " + zumbisDerrotados, 500, 550);
+                pontuacaoText.endRendering();
+                
+                //O que da uma atrasada no jogo
+                try {Thread.sleep(200);} 
+                catch (InterruptedException e) {System.out.println(e);}
                 //Atualiza o que estah no frame buffer e manda pra tela
                 gl.glFlush();
             }//fim_for (z = 0; z <= aux1; z++)

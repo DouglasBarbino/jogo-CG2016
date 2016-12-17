@@ -82,8 +82,6 @@ public class Zumbis {
         
         //Classe para desenhar o zumbi se movimentando
         this.x -= this.velocidade; //Vai do ponto
-        try {Thread.sleep(180);} 
-        catch (InterruptedException e) {System.out.println(e);}
     }//fim_caminhar()
     
     public void atacar(Plantas p){
