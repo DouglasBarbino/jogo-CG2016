@@ -2,12 +2,17 @@
 
 Bem vindo ao jogo 'Proteja o seu Jardim'! Aqui, voce estara sobre um ataque de zumbis que desejam entrar em sua casa para poder devorá-lo.
 Apesar de nao possuirem cerebros, os danados estao invadindo seu jardim, evitando a porta da frente de sua casa.
-Mas nao se preocupe: as plantas estao a seu favor, e vao te ajudar a impedir que os zumbis entrem!
-Seu trabalho deve ser, somente, plantar as plantas em seu jardim, planejando sua defesa.
-Seu jardim eh composto de tres fileira com 9 colunas que podem ser plantadas. Para escolher uma planta, basta selecionar uma das cartas que estao presentes
-no lado extremo esquerdo da tela do seu jogo. Clique em uma carta e, posteriormente, em uma posiçao do seu jardim para planta-la.
+Mas não se preocupe: as plantas estao a seu favor, e vão te ajudar a impedir que os zumbis entrem!
+
+OBJETIVO: 
+
+Seu trabalho deve ser, somente, plantar as plantas em seu jardim, planejando sua defesa, sendo que todas as plantas tem um custo para serem plantadas: elas precisam de sois! 
 O intuito do jogo eh que voce consiga matar a maior quantidade de zumbis possiveis. 
 O jogo termina quando um zumbi conseguir chegar em sua casa, ou seja, do outro lado do gramado.
+
+SOBRE O JOGO: 
+
+Seu jardim é composto por três fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta selecionar uma das cartas que estao presentes no lado extremo esquerdo da tela do seu jogo. Clique em uma carta e, posteriormente, em uma posiçao do seu jardim para plantá-la.
 Ha quatro tipos de plantas:
 
 1) Planta normal:
@@ -34,14 +39,13 @@ Ha quatro tipos de plantas:
 	projeteis = lança projeteis de pedra;
         custo = 250;
 	efeito especial = afasta o zumbi quando os projeteis o atingem;
-Observe que todas as plantas tem um custo para serem plantadas. Ela precisam de sois para serem plantadas! 
-Os sois caem do ceu no decorrer do jogo. Cada sol que atinge o chao eh armazenado com o valor 50. 
-Seu Armazen de Sois sera mostrado no canto superior direito da tela do jogo.
-Para plantar uma planta, voce deve ter pelo menos o valor do custo da planta desejada em sois armazenados.
-Ao plantar uma planta, o seu custo sera retirado do seu armazenamento de sois. 
+
+Como já foi dito, cada planta possui um determinado custo de sois para ser plantada. Os sois caem do ceu no decorrer do jogo, sendo que para cada sol que atinge o chao é acrescentado 50 no contador que é mostrado no canto superior direito da tela do jogo.
+Para plantar uma planta, voce deve ter pelo menos o valor do custo da planta desejada em sois armazenados. Ao plantá-la, seu custo sera retirado do seu armazenamento de sois. 
 Mais uma coisa: plantas lançam projeteis para atacar os zumbis, que podem ou nao conter efeitos sobre os mortos-vivos (veja item efeito especial acima).
 O ataque recebido pelo zumbi tirara de sua vida o valor referente ao ataque da planta. Um zumbi morrera (desta vez de verdade), quando sua vida chegar a 0.
 Ha tres tipos de zumbis:
+
 1) Zumbi Basico:
 	vida = 8;
         velocidade = 2;
@@ -54,7 +58,10 @@ Ha tres tipos de zumbis:
 	vida = 24;
         velocidade = 3;
         ataque = 4;
-Estes sao os zumbis. Observe que cada um tem uma quantia de vida, uma velocidade de caminhada e um ataque.
-Sim, os zumbis, se chegarem em suas plantas, irao causar danos nas mesmas, no valor de seu respectivo Ataque. 
+
+Estes sao os zumbis. Observe que cada um tem uma quantia de vida, uma velocidade de caminhada e um ataque. Quando um zumbi chega em qualquer planta sua, ele irá causar danos nela conforme o valor de seu respectivo ataque. 
 Sua plantinha so ira morrer quando sua vida chegar a ZERO!
 Mais um detalhe: quando um zumbi estiver devorando uma planta, o jogo ira dar pequenas travadas para que voce possa perceber o ataque, voltando ao normal quando a planta morrer.
+
+INTERAÇÕES COM O USUÁRIO:
+O usuário pode interagir com o jogo por meio de cliques com o mouse, sendo que uma aplicação dessa interação se dá no ato do jogador plantar uma determinada planta. Está ação ocorre quando o jogador clica em uma das cartas localizadas no canto esquerdo e, após isso, clica na parte do cenário destinada para o plantio, sendo que ele só ocorre caso o jogador possua sois suficientes para isso.
