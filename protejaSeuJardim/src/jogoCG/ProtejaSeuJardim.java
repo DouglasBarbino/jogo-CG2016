@@ -26,10 +26,14 @@ public class ProtejaSeuJardim implements GLEventListener {
 
     private static int[] x = new int[1000];
     private static int[] y = new int[1000];
+    private static int[] xInicial = new int[1000];
+    private static int[] yInicial = new int[1000];
+    private static int[] xSeg = new int[1000];
+    private static int[] ySeg = new int[1000];
     private static int[] xPlanta = new int[1000];
     private static int[] yPlanta = new int[1000];
-    private static int count1 = 0, count2 = 0;
-    private static int aux1 = 0, aux2 = 0;
+    private static int count1 = 0, count2 = 0, countInicial = 0, countSeg = 0;
+    private static int aux1 = 0, aux2 = 0, aux0 = 0, aux3 = 0;
     private static Zumbis[] zumbi;
     private static Plantas[] planta;
     //private static Projetil[] projetil;
@@ -40,7 +44,8 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int geraZumbi = 0;
     private static int xSol = 0;
     private static int ySol = 300;
-    private static int sois = 100, zumbisDerrotados = 0, haSois = 0, fimDeJogo = 0;
+    private static int sois = 100, zumbisDerrotados = 0, haSois = 0, fimDeJogo = 1, nivelJogo = 0, primeiraTela = 1;
+    private static int estouSegundaTela = 0;
     //private static int controleSol = 1;
     //Inicializacao da classe randomica
     private static Random random = new Random();
@@ -53,7 +58,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         frame.setSize(800, 600);
         final Animator animator = new Animator(canvas);
         
-        System.out.println("SOIS: "+sois);
+        //System.out.println("SOIS: "+sois);
         
         frame.addWindowListener(new WindowAdapter() {
 
@@ -78,10 +83,27 @@ public class ProtejaSeuJardim implements GLEventListener {
             @Override
             public void mouseClicked(MouseEvent e) {
                 //Codigo passado em aula
+                if((fimDeJogo == 1) && (estouSegundaTela == 0)){
+                    xInicial[countInicial] = e.getX() - 391; //centralizando
+                    yInicial[countInicial] = e.getY() * -1 + 280; //invertendo e centralizando
+                    //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                    aux0 = countInicial;
+                    countInicial++;
+                    primeiraTela = 0;
+                }
+                if((fimDeJogo == 1) && (estouSegundaTela == 1)){
+                    xSeg[countSeg] = e.getX() - 391; //centralizando
+                    ySeg[countSeg] = e.getY() * -1 + 280; //invertendo e centralizando
+                    System.out.println("xSeg, ySeg: " +xSeg[countSeg] + ySeg[countSeg]);
+                    //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                    aux3 = countSeg;
+                    countSeg++;
+                    estouSegundaTela = 0;
+                }
                 if (e.getButton() == MouseEvent.BUTTON1) { //Botao esquerdo
                     //Convertendo o sistema de coordenadas do canvas para o OpenGL
                     //No Windows nao eh tao centralizado assim o clique do mouse
-                    if ((e.getX() - 391) <= -320) {
+                    if (((e.getX() - 391) <= -320) && (fimDeJogo != 1)) {
                         x[count1] = e.getX() - 391; //centralizando
                         y[count1] = e.getY() * -1 + 280; //invertendo e centralizando
                         //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
@@ -91,7 +113,7 @@ public class ProtejaSeuJardim implements GLEventListener {
                         if (geraPlanta == 0)
                             geraPlanta++;
                     }
-                    else{
+                    else if(((e.getX() - 391) > -320) && (fimDeJogo != 1)){
                         //Apenas pega essa coordenada caso for gerar uma planta nova
                         if (geraPlanta == 1 ){
                             if(haSois == 1){
@@ -122,11 +144,11 @@ public class ProtejaSeuJardim implements GLEventListener {
         planta = new Plantas[27];
         
         //random.nextInt(3)+ 1 gera numeros entre 1 e 3
-        zumbi[0] = new Zumbis(1, random.nextInt(3)+ 1);
+        zumbi[0] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
         //zumbi[0].setX(-720);
-        zumbi[1] = new Zumbis(2, random.nextInt(3)+ 1);
+        zumbi[1] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
         zumbi[1].setX(20);
-        zumbi[2] = new Zumbis(3, random.nextInt(3)+ 1);
+        zumbi[2] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
         zumbi[2].setX(40);
         contadorZumbi = 3;
         
@@ -235,19 +257,16 @@ public class ProtejaSeuJardim implements GLEventListener {
                 desenhaPlantas(gl, -370, -180, 4);
 
                 for (desenhaZumbi = 0; desenhaZumbi < contadorZumbi; desenhaZumbi++) {
-                    desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), zumbi[desenhaZumbi].getTipo());
+                    desenhaZumbis(gl, zumbi[desenhaZumbi].getX(), zumbi[desenhaZumbi].getY(), nivelJogo);
                     zumbi[desenhaZumbi].caminhar();
                 }
-
-                //if (controleSol == 1){ ---> TIREI a variavel controleSol porque ela eh sempre igual a 1
+                
                 desenhaSol(gl, xSol, ySol);
-                //para mostrar a quantidade de sois no jogo
-                //}
                 //Atualiza Sol
                 contadorSol++;
-                ySol -= 25; //O Sol ira parar em y=0
+                ySol -= 10; //O Sol ira parar em y=0
                 //Comando para um novo solzinho cair
-                if (contadorSol == 12) {
+                if (contadorSol == 30) {
                     contadorSol = 0;
                     sois += 50;//Aumento a quantidade de sois totais no jogo                
                     //Um sol, apos cair, devera ficar no chao ate que o proximo caia. Sempre dois sois ficarao na tela
@@ -259,9 +278,9 @@ public class ProtejaSeuJardim implements GLEventListener {
                 //Atualiza a geracao de zumbi
                 geraZumbi++;
                 //Comando para um novo zumbi ser gerado
-                if (geraZumbi == 48) {//Sera um multiplo do CONTADORSOL!!!
+                if (geraZumbi == 40) {//Sera um multiplo do CONTADORSOL!!!
                     //Tipo e posicao aleatorios
-                    zumbi[contadorZumbi] = new Zumbis(random.nextInt(3) + 1, random.nextInt(3) + 1);
+                    zumbi[contadorZumbi] = new Zumbis(nivelJogo, random.nextInt(3) + 1);
                     geraZumbi = 0;
                     contadorZumbi++;
                 }
@@ -269,12 +288,13 @@ public class ProtejaSeuJardim implements GLEventListener {
                 //Agora verificaremos se o zumbi chegou na linha final do jogo
                 for(chegouFim = 0; chegouFim < contadorZumbi; chegouFim++){
                     //System.out.println("X do Zumbi: "+zumbi[chegouFim].getX());
-                    if(zumbi[chegouFim].getX() <= -340)
+                    if(zumbi[chegouFim].getX() <= -340){
                         fimDeJogo = 1;
+                        primeiraTela = 1;
+                    }
                 }
                 
-                //Escrita da quantidade de sois
-                
+                //Escrita da quantidade de sois                
                 TextRenderer soisText = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
                 //Tamanho da tela
                 soisText.beginRendering(800, 600);
@@ -298,6 +318,32 @@ public class ProtejaSeuJardim implements GLEventListener {
                 pontuacaoText.draw("PONTUACAO: " + zumbisDerrotados, 500, 550);
                 pontuacaoText.endRendering();
                 
+                //Valor das Cartas
+                TextRenderer custoText1 = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                TextRenderer custoText2 = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                TextRenderer custoText3 = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                TextRenderer custoText4 = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                //Tamanho da tela
+                custoText1.beginRendering(800, 600);
+                custoText1.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                custoText1.draw("100", 0, 580);
+                custoText1.endRendering();
+                
+                custoText2.beginRendering(800, 600);
+                custoText2.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                custoText2.draw("150", 0, 430);
+                custoText2.endRendering();
+                
+                custoText3.beginRendering(800, 600);
+                custoText3.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                custoText3.draw("200", 0, 270);
+                custoText3.endRendering();
+                
+                custoText4.beginRendering(800, 600);
+                custoText4.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                custoText4.draw("250", 0, 120);
+                custoText4.endRendering();
+                
                 //O que da uma atrasada no jogo
                 try {Thread.sleep(200);} 
                 catch (InterruptedException e) {System.out.println(e);}
@@ -305,26 +351,167 @@ public class ProtejaSeuJardim implements GLEventListener {
                 gl.glFlush();
             }//fim_for (z = 0; z <= aux1; z++)
         }
-        else{
+        else if(fimDeJogo == 1){//Tela de inicio e fim de jogo
             GL gl = drawable.getGL();
             //Aqui que realmente manda desenhar a cor de fundo
             gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
             gl.glLoadIdentity();
-            desenhaMarcacoes(gl);
+            //desenhaMarcacoes(gl);
                 
-            //Deletaremos as plantas e zumbis
+            /*//Deletaremos as plantas e zumbis
             for(chegouFim = 0; chegouFim < contadorZumbi; chegouFim++){
                     zumbi[chegouFim] = null;
-                }
+            }
             
             for(chegouFim = 0; chegouFim < contadorPlanta; chegouFim++){
                     planta[chegouFim] = null;
+            }*/
+            
+            //DESENHANDO A PRIMEIRA TELA!
+            if(primeiraTela == 1){
+                estouSegundaTela = 0;
+                
+                TextRenderer IniciarText = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+                //Tamanho da tela
+                IniciarText.beginRendering(800, 600);
+                IniciarText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                IniciarText.draw("INICIAR", 120, 300);                
+                IniciarText.endRendering();
+                
+                TextRenderer AjudaText = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+                //Tamanho da tela
+                AjudaText.beginRendering(800, 600);
+                AjudaText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                AjudaText.draw("AJUDA", 550, 300);                
+                AjudaText.endRendering();
+                
+                desenhaBotao(gl, -320, 100, -80, -100);
+                desenhaBotao(gl, 80, 100, 320, -100);
+            }
+            
+            if(((xInicial[aux0]) >= -320) && ((xInicial[aux0]) <= -80) &&
+               ((yInicial[aux0]) >= -100) && ((yInicial[aux0]) <= 100)){
+                
+                estouSegundaTela = 1;
+                nivelJogo = 0;
+              
+                //TELA REFERENTE AO INICIO DO JOGO: ESTOU INDO PARA A ESCOLHA DOS NIVEIS
+                desenhaBotao(gl, -320, 100, -160, -100);
+                desenhaBotao(gl, -80, 100, 80, -100);
+                desenhaBotao(gl, 160, 100, 320, -100);
+                
+                TextRenderer Nivel1Text = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+                //Tamanho da tela
+                Nivel1Text.beginRendering(800, 600);
+                Nivel1Text.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                Nivel1Text.draw("NIVEL 1", 90, 300);                
+                Nivel1Text.endRendering();
+                
+                TextRenderer Nivel2Text = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+                //Tamanho da tela
+                Nivel2Text.beginRendering(800, 600);
+                Nivel2Text.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                Nivel2Text.draw("NIVEL 2", 330, 300);                
+                Nivel2Text.endRendering();
+                
+                TextRenderer Nivel3Text = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+                //Tamanho da tela
+                Nivel3Text.beginRendering(800, 600);
+                Nivel3Text.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                Nivel3Text.draw("NIVEL 3", 580, 300);                
+                Nivel3Text.endRendering();
+                
+                xSeg[aux3] = 0;
+                ySeg[aux3] = 0;
+                
+                if(((xSeg[aux3]) >= -320) && ((xSeg[aux3]) <= -160) &&
+                   ((ySeg[aux3]) >= -100) && ((ySeg[aux3]) <= 100)){
+                    
+                    nivelJogo = 1;
                 }
-            System.out.println("!!!FIM DE JOGO!!! Pontuacao: "+zumbisDerrotados);
-            try {Thread.sleep(1000);} 
-            catch (InterruptedException e) {System.out.println(e);}
+                if(((xSeg[aux3]) >= -80) && ((xSeg[aux3]) <= 80) &&
+                   ((ySeg[aux3]) >= -100) && ((ySeg[aux3]) <= 100)){
+                    
+                    nivelJogo = 2;
+                }
+                if(((xSeg[aux3]) >= 160) && ((xSeg[aux3]) <= 320) &&
+                   ((ySeg[aux3]) >= -100) && ((ySeg[aux3]) <= 100)){
+                    
+                    nivelJogo = 3;
+                }
+                
+                //Se escolhi alguma opcao
+                if(nivelJogo != 0){
+                    fimDeJogo = 0;
+                }
+            }
+            
+            if(((xInicial[aux0]) >= 80) && ((xInicial[aux0]) <= 320) &&
+               ((yInicial[aux0]) >= -100) && ((yInicial[aux0]) <= 100)){
+                
+                estouSegundaTela = 1;
+                
+                //TELA REFERENTE AS INSTRUCOES
+                desenhaBotao(gl, 320, -150, 400, -300);
+                
+                TextRenderer VoltarText = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                //Tamanho da tela
+                VoltarText.beginRendering(800, 600);
+                VoltarText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                VoltarText.draw("VOLTAR", 740, 60);                
+                VoltarText.endRendering();
+                
+                TextRenderer InstrucaoText = new TextRenderer(new Font("Verdana", Font.BOLD, 12));
+                //Tamanho da tela
+                InstrucaoText.beginRendering(800, 600);
+                InstrucaoText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+                InstrucaoText.draw("Bem vindo ao jogo 'Proteja o seu Jardim'!", 0, 580);
+                InstrucaoText.draw("Aqui, voce estara sobre um ataque de zumbis que desejam entrar em sua casa para poder devorá-lo.", 0, 560);
+                InstrucaoText.draw("Apesar de nao possuirem cerebros, os danados estao invadindo seu jardim, evitando a porta da frente de sua casa.", 0, 540);
+                InstrucaoText.draw("Mas não se preocupe: as plantas estao a seu favor, e vão te ajudar a impedir que os zumbis entrem!", 0, 520);
+                InstrucaoText.draw("OBJETIVO:", 0, 480);
+                InstrucaoText.draw("Seu trabalho deve ser, somente, plantar e planejar sua defesa, sendo que todas as plantas tem um ", 0, 460); 
+                InstrucaoText.draw("custo para serem plantadas: elas precisam de sois!", 0, 440);
+                InstrucaoText.draw("O intuito do jogo eh que voce consiga matar a maior quantidade de zumbis possiveis.", 0, 420);
+                InstrucaoText.draw("O jogo termina quando um zumbi conseguir chegar em sua casa, ou seja, do outro lado do gramado.", 0, 400);                
+                InstrucaoText.draw("SOBRE O JOGO:", 0 , 360);
+                InstrucaoText.draw("Clique no botao INICIAR para escolher um entre tres niveis: quanto maior o nivel, mais fortes serao os zumbis!", 0 , 340);
+                InstrucaoText.draw("Seu jardim é composto por três fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta", 0, 320);
+                InstrucaoText.draw(" selecionar uma das cartas que estao presentes no lado extremo esquerdo da tela do seu jogo.", 0, 300);
+                InstrucaoText.draw("Clique em uma carta e, posteriormente, em uma posiçao do seu jardim para plantá-la. Agora, eh so esperar que ela", 0, 280);
+                InstrucaoText.draw("destrua os zumbis com seus projeteis. Nao se esqueca que algumas plantas tem efeitos sobre os zumbis: podem", 0, 260);
+                InstrucaoText.draw("retarda-los ou afasta-los! Alem disso, verifique a quantidade de sois armazenados antes de escolher uma carta,", 0, 240);                
+                InstrucaoText.draw(" se nao voce nao podera escolher a planta.", 0, 220);
+                InstrucaoText.draw("AS PLANTAS:", 0, 180);
+                InstrucaoText.draw("Planta normal, planta de gelo (retarda zumbis), planta de fogo e planta de terra (afasta zumbis).", 0, 160);
+                InstrucaoText.draw("Esta eh a ordem das plantas, da mais fraca para a mais forte.", 0, 140);                
+                InstrucaoText.draw("ZUMBIS:", 0, 120);
+                InstrucaoText.draw("Zumbi normal, cabeca de cone e cabeca de balde.", 0, 100);
+                InstrucaoText.draw("Esta eh a ordem do zumbi mais fraco para o mais forte.", 0, 80);
+                InstrucaoText.endRendering();
+                
+                if(((xSeg[aux3]) >= 320) && ((xSeg[aux3]) <= 400) &&
+                   ((ySeg[aux3]) >= -300) && ((ySeg[aux3]) <= -150)){
+                    primeiraTela = 1;
+                    estouSegundaTela = 0;
+                    aux0 = countInicial;
+                }                              
+            }
+            
             gl.glFlush();
         }
+    }
+    
+    //X1 e Y1 é o ponto superior esquerdo, X2 e Y2 é o canto inferior direito do botao
+    private void desenhaBotao(GL gl, int x1, int y1, int x2, int y2){
+        gl.glColor3f(0.0f, 0.5f, 0.0f);
+        
+        gl.glBegin(gl.GL_POINTS);
+        desenhaLinha(gl, x1, y1, x2, y1); //linha horizontal superior do botao
+        desenhaLinha(gl, x1, y1, x1, y2); //linha vertical esquerda
+        desenhaLinha(gl, x1, y2, x2, y2); //linha horizontal inferior
+        desenhaLinha(gl, x2, y1, x2, y2); //linha vertical direita
+        gl.glEnd();
     }
     
     //Conserta o vetor de zumbis quando algum morre
