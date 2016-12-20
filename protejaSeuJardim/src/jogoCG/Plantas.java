@@ -23,7 +23,7 @@ public class Plantas {
     int congelar;
     int afastar;
     int morta;
-    int x, y; //x e y são as coordenadas da planta
+    int x, y; //x e y sao as coordenadas da planta
     Projetil projetil;
     
     Plantas(int type, int colunaP, int linhaP){

@@ -46,6 +46,7 @@ public class ProtejaSeuJardim implements GLEventListener {
     private static int ySol = 300;
     private static int sois = 100, zumbisDerrotados = 0, haSois = 0, fimDeJogo = 1, nivelJogo = 0, primeiraTela = 1;
     private static int estouSegundaTela = 0;
+    private static int i = 0;
     //private static int controleSol = 1;
     //Inicializacao da classe randomica
     private static Random random = new Random();
@@ -84,16 +85,16 @@ public class ProtejaSeuJardim implements GLEventListener {
             public void mouseClicked(MouseEvent e) {
                 //Codigo passado em aula
                 if((fimDeJogo == 1) && (estouSegundaTela == 0)){
-                    xInicial[countInicial] = e.getX() - 391; //centralizando
-                    yInicial[countInicial] = e.getY() * -1 + 280; //invertendo e centralizando
+                    xInicial[countInicial] = e.getX() - 400; //centralizando
+                    yInicial[countInicial] = e.getY() * -1 + 300; //invertendo e centralizando
                     //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                     aux0 = countInicial;
                     countInicial++;
                     primeiraTela = 0;
                 }
                 if((fimDeJogo == 1) && (estouSegundaTela == 1)){
-                    xSeg[countSeg] = e.getX() - 391; //centralizando
-                    ySeg[countSeg] = e.getY() * -1 + 280; //invertendo e centralizando
+                    xSeg[countSeg] = e.getX() - 400; //centralizando
+                    ySeg[countSeg] = e.getY() * -1 + 300; //invertendo e centralizando
                     System.out.println("xSeg, ySeg: " +xSeg[countSeg] + ySeg[countSeg]);
                     //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                     aux3 = countSeg;
@@ -103,9 +104,9 @@ public class ProtejaSeuJardim implements GLEventListener {
                 if (e.getButton() == MouseEvent.BUTTON1) { //Botao esquerdo
                     //Convertendo o sistema de coordenadas do canvas para o OpenGL
                     //No Windows nao eh tao centralizado assim o clique do mouse
-                    if (((e.getX() - 391) <= -320) && (fimDeJogo != 1)) {
-                        x[count1] = e.getX() - 391; //centralizando
-                        y[count1] = e.getY() * -1 + 280; //invertendo e centralizando
+                    if (((e.getX() - 400) <= -320) && (fimDeJogo != 1)) {
+                        x[count1] = e.getX() - 400; //centralizando
+                        y[count1] = e.getY() * -1 + 300; //invertendo e centralizando
                         //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                         aux1 = count1;
                         count1++;
@@ -113,12 +114,12 @@ public class ProtejaSeuJardim implements GLEventListener {
                         if (geraPlanta == 0)
                             geraPlanta++;
                     }
-                    else if(((e.getX() - 391) > -320) && (fimDeJogo != 1)){
+                    else if(((e.getX() - 400) > -320) && (fimDeJogo != 1)){
                         //Apenas pega essa coordenada caso for gerar uma planta nova
-                        if (geraPlanta == 1 ){
+                        if (geraPlanta == 1){
                             if(haSois == 1){
-                            xPlanta[count2] = e.getX() - 391; //centralizando
-                            yPlanta[count2] = e.getY() * -1 + 280; //invertendo e centralizando
+                            xPlanta[count2] = e.getX() - 400; //centralizando
+                            yPlanta[count2] = e.getY() * -1 + 300; //invertendo e centralizando
                             //TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
                             aux2 = count2;
                             count2++;
@@ -143,15 +144,6 @@ public class ProtejaSeuJardim implements GLEventListener {
         //Criacao das plantas
         planta = new Plantas[27];
         
-        //random.nextInt(3)+ 1 gera numeros entre 1 e 3
-        zumbi[0] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
-        //zumbi[0].setX(-720);
-        zumbi[1] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
-        zumbi[1].setX(20);
-        zumbi[2] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
-        zumbi[2].setX(40);
-        contadorZumbi = 3;
-        
         //Sorteia uma coordenada para o solzinho entre -300 e 380
         xSol = random.nextInt(680) - 300;
     }//fim_main()
@@ -169,6 +161,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         if (height <= 0) { // avoid a divide by zero error!
             height = 1;
         }
+        //Cria a porta de visao
         gl.glViewport(0, 0, width, height);
         //Carregar a matriz para 3D
         gl.glMatrixMode(GL.GL_PROJECTION);
@@ -185,6 +178,17 @@ public class ProtejaSeuJardim implements GLEventListener {
         int mX, mY, mXPlanta, mYPlanta, z, desenhaPlanta, desenhaZumbi, chegouFim;
         
         if (fimDeJogo != 1) {
+            if ((contadorZumbi == 0) && (zumbisDerrotados == 0)){
+                //random.nextInt(3)+ 1 gera numeros entre 1 e 3
+                zumbi[0] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
+                //zumbi[0].setX(-720);
+                zumbi[1] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
+                zumbi[1].setX(20);
+                zumbi[2] = new Zumbis(nivelJogo, random.nextInt(3)+ 1);
+                zumbi[2].setX(40);
+                contadorZumbi = 3;
+            }
+            
             for (z = 0; z <= aux1; z++) {
                 mX = x[z]; //Coordenadas das Cartas
                 mY = y[z];
@@ -290,7 +294,23 @@ public class ProtejaSeuJardim implements GLEventListener {
                     //System.out.println("X do Zumbi: "+zumbi[chegouFim].getX());
                     if(zumbi[chegouFim].getX() <= -340){
                         fimDeJogo = 1;
+                        nivelJogo = 0;
                         primeiraTela = 1;
+                        estouSegundaTela = 0;
+                        //Verifica qual dos contadores tem um valor maior e o 
+                        //deixa no countSeg 
+                        if (countInicial > countSeg)
+                            countSeg = countInicial;
+                        for(i = 0; i < countSeg; i++){
+                            xSeg[i] = 400;
+                            ySeg[i] = 300;
+                            xInicial[i] = 400;
+                            yInicial[i] = 300;
+                        }
+                        countSeg = 0;
+                        countInicial = 0;
+                        aux0 = countInicial;
+                        aux3 = countSeg;
                     }
                 }
                 
@@ -369,7 +389,13 @@ public class ProtejaSeuJardim implements GLEventListener {
             
             //DESENHANDO A PRIMEIRA TELA!
             if(primeiraTela == 1){
+                //Limpa o contador de zumbis, plantas e os valores de sois e 
+                //a pontuacao
+                contadorZumbi = 0;
+                contadorPlanta = 0;
                 estouSegundaTela = 0;
+                sois = 100;
+                zumbisDerrotados = 0;
                 
                 TextRenderer IniciarText = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
                 //Tamanho da tela
@@ -421,8 +447,10 @@ public class ProtejaSeuJardim implements GLEventListener {
                 Nivel3Text.draw("NIVEL 3", 580, 300);                
                 Nivel3Text.endRendering();
                 
-                xSeg[aux3] = 0;
-                ySeg[aux3] = 0;
+                if (aux3 == 0){
+                    xSeg[aux3] = 350;
+                    ySeg[aux3] = -250;
+                }
                 
                 if(((xSeg[aux3]) >= -320) && ((xSeg[aux3]) <= -160) &&
                    ((ySeg[aux3]) >= -100) && ((ySeg[aux3]) <= 100)){
@@ -466,9 +494,9 @@ public class ProtejaSeuJardim implements GLEventListener {
                 InstrucaoText.beginRendering(800, 600);
                 InstrucaoText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
                 InstrucaoText.draw("Bem vindo ao jogo 'Proteja o seu Jardim'!", 0, 580);
-                InstrucaoText.draw("Aqui, voce estara sobre um ataque de zumbis que desejam entrar em sua casa para poder devorá-lo.", 0, 560);
+                InstrucaoText.draw("Aqui, voce estara sobre um ataque de zumbis que desejam entrar em sua casa para poder devora-lo.", 0, 560);
                 InstrucaoText.draw("Apesar de nao possuirem cerebros, os danados estao invadindo seu jardim, evitando a porta da frente de sua casa.", 0, 540);
-                InstrucaoText.draw("Mas não se preocupe: as plantas estao a seu favor, e vão te ajudar a impedir que os zumbis entrem!", 0, 520);
+                InstrucaoText.draw("Mas nao se preocupe: as plantas estao a seu favor, e vao te ajudar a impedir que os zumbis entrem!", 0, 520);
                 InstrucaoText.draw("OBJETIVO:", 0, 480);
                 InstrucaoText.draw("Seu trabalho deve ser, somente, plantar e planejar sua defesa, sendo que todas as plantas tem um ", 0, 460); 
                 InstrucaoText.draw("custo para serem plantadas: elas precisam de sois!", 0, 440);
@@ -476,9 +504,9 @@ public class ProtejaSeuJardim implements GLEventListener {
                 InstrucaoText.draw("O jogo termina quando um zumbi conseguir chegar em sua casa, ou seja, do outro lado do gramado.", 0, 400);                
                 InstrucaoText.draw("SOBRE O JOGO:", 0 , 360);
                 InstrucaoText.draw("Clique no botao INICIAR para escolher um entre tres niveis: quanto maior o nivel, mais fortes serao os zumbis!", 0 , 340);
-                InstrucaoText.draw("Seu jardim é composto por três fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta", 0, 320);
+                InstrucaoText.draw("Seu jardim eh composto por tres fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta", 0, 320);
                 InstrucaoText.draw(" selecionar uma das cartas que estao presentes no lado extremo esquerdo da tela do seu jogo.", 0, 300);
-                InstrucaoText.draw("Clique em uma carta e, posteriormente, em uma posiçao do seu jardim para plantá-la. Agora, eh so esperar que ela", 0, 280);
+                InstrucaoText.draw("Clique em uma carta e, posteriormente, em uma posicao do seu jardim para planta-la. Agora, eh so esperar que ela", 0, 280);
                 InstrucaoText.draw("destrua os zumbis com seus projeteis. Nao se esqueca que algumas plantas tem efeitos sobre os zumbis: podem", 0, 260);
                 InstrucaoText.draw("retarda-los ou afasta-los! Alem disso, verifique a quantidade de sois armazenados antes de escolher uma carta,", 0, 240);                
                 InstrucaoText.draw(" se nao voce nao podera escolher a planta.", 0, 220);
@@ -495,6 +523,8 @@ public class ProtejaSeuJardim implements GLEventListener {
                     primeiraTela = 1;
                     estouSegundaTela = 0;
                     aux0 = countInicial;
+                    xSeg[aux3] = 400;
+                    ySeg[aux3] = 300;
                 }                              
             }
             
@@ -502,7 +532,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         }
     }
     
-    //X1 e Y1 é o ponto superior esquerdo, X2 e Y2 é o canto inferior direito do botao
+    //X1 e Y1 eh o ponto superior esquerdo, X2 e Y2 eh o canto inferior direito do botao
     private void desenhaBotao(GL gl, int x1, int y1, int x2, int y2){
         gl.glColor3f(0.0f, 0.5f, 0.0f);
         
@@ -562,7 +592,7 @@ public class ProtejaSeuJardim implements GLEventListener {
             localX++;
         }
         //No caso do Y, transladamos 100 pixels para facilitar a conta,
-        //além de que a divisao eh feita por 200
+        //alem de que a divisao eh feita por 200
         localY = Math.round((y-100)/200);
         //Correcao necessaria
         if (y > 100){
@@ -809,7 +839,7 @@ public class ProtejaSeuJardim implements GLEventListener {
         desenhaLinha(gl, 320, -300, 320, 300);
         
         //Cartas, linha vertical
-        //Cor preta para as marcações        
+        //Cor preta para as marcacoes        
         gl.glColor3f(0.0f, 0.5f, 0.0f);        
         desenhaLinha(gl, -320, -300, -320, 300);
         //CARTAS, horizontal
