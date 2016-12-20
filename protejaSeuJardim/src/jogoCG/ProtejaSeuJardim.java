@@ -499,12 +499,12 @@ public class ProtejaSeuJardim implements GLEventListener {
                 InstrucaoText.draw("Mas nao se preocupe: as plantas estao a seu favor, e vao te ajudar a impedir que os zumbis entrem!", 0, 520);
                 InstrucaoText.draw("OBJETIVO:", 0, 480);
                 InstrucaoText.draw("Seu trabalho deve ser, somente, plantar e planejar sua defesa, sendo que todas as plantas tem um ", 0, 460); 
-                InstrucaoText.draw("custo para serem plantadas: elas precisam de sois!", 0, 440);
-                InstrucaoText.draw("O intuito do jogo eh que voce consiga matar a maior quantidade de zumbis possiveis.", 0, 420);
+                InstrucaoText.draw("custo para serem plantadas: elas precisam de sois! Sois amarelos caem do ceu e sao armazenados", 0, 440);
+                InstrucaoText.draw("no seu armazem. O intuito do jogo eh que voce consiga matar a maior quantidade de zumbis possiveis.", 0, 420);
                 InstrucaoText.draw("O jogo termina quando um zumbi conseguir chegar em sua casa, ou seja, do outro lado do gramado.", 0, 400);                
                 InstrucaoText.draw("SOBRE O JOGO:", 0 , 360);
-                InstrucaoText.draw("Clique no botao INICIAR para escolher um entre tres niveis: quanto maior o nivel, mais fortes serao os zumbis!", 0 , 340);
-                InstrucaoText.draw("Seu jardim eh composto por tres fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta", 0, 320);
+                InstrucaoText.draw("Clique no botao INICIAR para escolher um entre 3 niveis: quanto maior o nivel, mais fortes serao os zumbis!", 0 , 340);
+                InstrucaoText.draw("Seu jardim eh composto por 3 fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta", 0, 320);
                 InstrucaoText.draw(" selecionar uma das cartas que estao presentes no lado extremo esquerdo da tela do seu jogo.", 0, 300);
                 InstrucaoText.draw("Clique em uma carta e, posteriormente, em uma posicao do seu jardim para planta-la. Agora, eh so esperar que ela", 0, 280);
                 InstrucaoText.draw("destrua os zumbis com seus projeteis. Nao se esqueca que algumas plantas tem efeitos sobre os zumbis: podem", 0, 260);
@@ -513,9 +513,9 @@ public class ProtejaSeuJardim implements GLEventListener {
                 InstrucaoText.draw("AS PLANTAS:", 0, 180);
                 InstrucaoText.draw("Planta normal, planta de gelo (retarda zumbis), planta de fogo e planta de terra (afasta zumbis).", 0, 160);
                 InstrucaoText.draw("Esta eh a ordem das plantas, da mais fraca para a mais forte.", 0, 140);                
-                InstrucaoText.draw("ZUMBIS:", 0, 120);
-                InstrucaoText.draw("Zumbi normal, cabeca de cone e cabeca de balde.", 0, 100);
-                InstrucaoText.draw("Esta eh a ordem do zumbi mais fraco para o mais forte.", 0, 80);
+                InstrucaoText.draw("ZUMBIS:", 0, 100);
+                InstrucaoText.draw("Zumbi normal, cabeca de cone e cabeca de balde.", 0, 80);
+                InstrucaoText.draw("Esta eh a ordem do zumbi mais fraco para o mais forte.", 0, 60);
                 InstrucaoText.endRendering();
                 
                 if(((xSeg[aux3]) >= 320) && ((xSeg[aux3]) <= 400) &&
