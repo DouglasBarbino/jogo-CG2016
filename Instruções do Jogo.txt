@@ -1,67 +1,67 @@
 ==========Instruções do Jogo "Proteja o Seu Jardim"==========
 
-Bem vindo ao jogo 'Proteja o seu Jardim'! Aqui, voce estara sobre um ataque de zumbis que desejam entrar em sua casa para poder devorá-lo.
-Apesar de nao possuirem cerebros, os danados estao invadindo seu jardim, evitando a porta da frente de sua casa.
-Mas não se preocupe: as plantas estao a seu favor, e vão te ajudar a impedir que os zumbis entrem!
+Bem-vindo ao jogo 'Proteja o seu Jardim'! Aqui, você estará em um ataque de zumbis que desejam entrar em sua casa para poder devorá-lo.
+Apesar de não possuírem cérebros, os danados estão invadindo seu jardim, evitando a porta da frente de sua casa.
+Mas não se preocupe: as plantas estão a seu favor, e vão te ajudar a impedir que os zumbis entrem!
 
 OBJETIVO: 
-
 Seu trabalho deve ser, somente, plantar as plantas em seu jardim, planejando sua defesa, sendo que todas as plantas tem um custo para serem plantadas: elas precisam de sois! 
-O intuito do jogo eh que voce consiga matar a maior quantidade de zumbis possiveis. 
+O intuito do jogo é que você consiga matar a maior quantidade de zumbis possíveis. Seu Score (quantidade de zumbis mortos) aparecerá no campo Pontuação, na parte superior direita do jogo.
 O jogo termina quando um zumbi conseguir chegar em sua casa, ou seja, do outro lado do gramado.
 
 SOBRE O JOGO: 
-
-Seu jardim é composto por três fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta selecionar uma das cartas que estao presentes no lado extremo esquerdo da tela do seu jogo. Clique em uma carta e, posteriormente, em uma posiçao do seu jardim para plantá-la.
+Seu jardim é composto por três fileiras com 9 colunas que podem ser plantadas. Para escolher uma planta, basta selecionar uma das cartas que estão presentes no lado extremo esquerdo da tela do seu jogo. Clique em uma carta e, posteriormente, em uma posição do seu jardim para plantá-la.
 Ha quatro tipos de plantas:
 
 1) Planta normal:
-	vida = 8;
-	ataque = 1;
-	custo = 100;
-	projeteis = lança projeteis normais
-	efeito especial = nenhum;
+		vida = 8;
+		ataque = 1;
+		custo = 100;
+		projeteis = lança projeteis normais;
+		efeito especial = nenhum;
 2) Planta de Gelo:
-	vida = 8;
-        ataque = 1;
-        custo = 150;
-	projeteis = lança projeteis de gelo
-        efeito especial = congela os zumbis, retardando-os.
+		vida = 8;
+        	ataque = 1;
+        	custo = 150;
+		projeteis = lança projeteis de gelo;
+        	efeito especial = congela os zumbis, retardando-os.
 3) Planta de Fogo:
-	vida = 16;
-        ataque = 2;
-        custo = 200;
-	projeteis = lança projeteis de fogo
-        efeito especial = nenhum, mas é mais forte;
+		vida = 16;
+        	ataque = 2;
+        	custo = 200;
+		projeteis = lança projeteis de fogo;
+        	efeito especial = nenhum, mas é mais forte;
 4) Planta de Terra:        
-        vida = 16;
-        ataque = 2;
-	projeteis = lança projeteis de pedra;
-        custo = 250;
-	efeito especial = afasta o zumbi quando os projeteis o atingem;
+        	vida = 16;
+        	ataque = 2;
+		custo = 250;
+		projeteis = lança projeteis de pedra;
+		efeito especial = afasta o zumbi quando os projeteis o atingem;
 
-Como já foi dito, cada planta possui um determinado custo de sois para ser plantada. Os sois caem do ceu no decorrer do jogo, sendo que para cada sol que atinge o chao é acrescentado 50 no contador que é mostrado no canto superior direito da tela do jogo.
-Para plantar uma planta, voce deve ter pelo menos o valor do custo da planta desejada em sois armazenados. Ao plantá-la, seu custo sera retirado do seu armazenamento de sois. 
-Mais uma coisa: plantas lançam projeteis para atacar os zumbis, que podem ou nao conter efeitos sobre os mortos-vivos (veja item efeito especial acima).
+Como já foi dito, cada planta possui um determinado custo de sois para ser plantada. Os sois caem do céu no decorrer do jogo, sendo que para cada sol que atinge o chão é acrescentado 50 no contador que é mostrado no campo Sois na parte superior esquerda do jogo.
+Para plantar uma planta, você deve ter pelo menos o valor do custo da planta desejada em sois armazenados. Ao plantá-la, seu custo será retirado do seu armazenamento de sois. 
+Mais uma coisa: plantas lançam projeteis para atacar os zumbis, que podem ou não conter efeitos sobre os mortos-vivos (veja item efeito especial acima).
 O ataque recebido pelo zumbi tirara de sua vida o valor referente ao ataque da planta. Um zumbi morrera (desta vez de verdade), quando sua vida chegar a 0.
-Ha tres tipos de zumbis:
+Ha três tipos de zumbis:
 
-1) Zumbi Basico:
-	vida = 8;
-        velocidade = 2;
-        ataque = 1;
+1) Zumbi Básico:
+		vida = 8;
+        	velocidade = 2;
+        	ataque = 1;
+
 2) Zumbi Cabeça de Cone:
-        vida = 16;
-        velocidade = 2;
-        ataque = 2;
-3)Zumbi Cabeça de Balde:
-	vida = 24;
-        velocidade = 3;
-        ataque = 4;
+        	vida = 16;
+        	velocidade = 2;
+        	ataque = 2;
 
-Estes sao os zumbis. Observe que cada um tem uma quantia de vida, uma velocidade de caminhada e um ataque. Quando um zumbi chega em qualquer planta sua, ele irá causar danos nela conforme o valor de seu respectivo ataque. 
-Sua plantinha so ira morrer quando sua vida chegar a ZERO!
-Mais um detalhe: quando um zumbi estiver devorando uma planta, o jogo ira dar pequenas travadas para que voce possa perceber o ataque, voltando ao normal quando a planta morrer.
+3) Zumbi Cabeça de Balde:
+		vida = 24;
+        	velocidade = 3;
+        	ataque = 4;
+
+Estes são os zumbis. Observe que cada um tem uma quantia de vida, uma velocidade de caminhada e um ataque. Quando um zumbi chega em qualquer planta sua, ele irá causar danos nela conforme o valor de seu respectivo ataque. 
+Sua plantinha só irá morrer quando sua vida chegar a ZERO!
+Mais um detalhe: quando um zumbi estiver devorando uma planta, o jogo irá dar pequenas travadas para que você possa perceber o ataque, voltando ao normal quando a planta morrer.
 
 INTERAÇÕES COM O USUÁRIO:
-O usuário pode interagir com o jogo por meio de cliques com o mouse, sendo que uma aplicação dessa interação se dá no ato do jogador plantar uma determinada planta. Está ação ocorre quando o jogador clica em uma das cartas localizadas no canto esquerdo e, após isso, clica na parte do cenário destinada para o plantio, sendo que ele só ocorre caso o jogador possua sois suficientes para isso.
+O usuário pode interagir com o jogo por meio de cliques com o mouse, sendo que uma aplicação dessa interação se dá no ato do jogador plantar uma determinada planta. Está ação ocorre quando o jogador clica em uma das cartas localizadas no canto esquerdo e, após isso, clica na parte do cenário destinada para o plantio, sendo que ele só ocorre caso o jogador possua sois suficientes.
