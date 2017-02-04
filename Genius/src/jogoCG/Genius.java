@@ -40,14 +40,14 @@ public class Genius implements GLEventListener {
     
     //Variáveis para manipularem o jogo
     private static Random random = new Random();
-    int[] ordemJogo = new int[200];//Vetor que armazenara as ordens das cores que o jogador devera clicar
+    private static int[] ordemJogo = new int[200];//Vetor que armazenara as ordens das cores que o jogador devera clicar
     int[] ordemJogador = new int[200];//vetor que armazenara a ordem de cores clicada pelo jogador.
-    static int countVetor;
+    private static int countVetor = 0;
 
     public static void main(String[] args) {
         count = 0;
         countCirc = 0;
-        countVetor = 0;
+        //countVetor = 0;
         Frame frame = new Frame("Genius");
         final GLCanvas canvas = new GLCanvas();
 
@@ -186,33 +186,37 @@ public class Genius implements GLEventListener {
         glut.glutSolidCube(0.8f);
         //Retorna o desenho original sem a TRANSLACAO
         gl.glPopMatrix();
+        
+        //gl.glFlush();
     }
     
     //Essa funcao será a responsavel por gerar uma nova cor para o vetor ordemJogo[]
-    public int sorteiaCor(){
+    //public int sorteiaCor(){
         //Sorteara um numero entre 0 e 3
-        return(random.nextInt(3));
-    }
+    //    return(random.nextInt(3));
+    //}
     
     //Esta funcao servira para inserir e fazer as cores brilharem na ordem que o jogador deve escolher
     public void gerarOrdem(GL gl){
         int i;
-        ordemJogo[countVetor] = sorteiaCor();
+        ordemJogo[countVetor] = random.nextInt(4);
         countVetor++;
         
-        System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
+        //System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
         System.out.println("countVetor: " +countVetor);
         
         for(i = 0; i < countVetor; i++){
             //Salvando os desenhos para que a translacao nao seja acumulativa
             gl.glPushMatrix();
+            System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
             
-            switch(ordemJogo[countVetor]){
+            switch(ordemJogo[i]){
                 case 0: //VERDE 
                     //Faco cubo brilhar
                     gl.glTranslatef(-0.4f, 0.4f, 0.5f);                    
                     gl.glColor3f(0.0f, 1.0f, 0.0f);
-                    glut.glutSolidCube(0.8f);                    
+                    glut.glutSolidCube(0.8f); 
+                    gl.glFinish();
                     try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ele ao normal
@@ -226,6 +230,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(0.4f, 0.4f, 0.5f);                    
                     gl.glColor3f(1.0f, 0.0f, 0.0f);
                     glut.glutSolidCube(0.8f);
+                    gl.glFinish();
                     try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ao original
@@ -239,6 +244,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(-0.4f, -0.4f, 0.5f);                    
                     gl.glColor3f(1.0f, 1.0f, 0.0f);
                     glut.glutSolidCube(0.8f);
+                    gl.glFinish();
                     try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ao original
@@ -252,6 +258,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(0.4f, -0.4f, 0.5f);                    
                     gl.glColor3f(0.0f, 0.0f, 1.0f);
                     glut.glutSolidCube(0.8f);
+                    gl.glFinish();
                     try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ao original
@@ -259,7 +266,7 @@ public class Genius implements GLEventListener {
                     glut.glutSolidCube(0.8f);
                     gl.glPopMatrix();
                     break;
-            }            
+            }  
         }        
     }
 }
