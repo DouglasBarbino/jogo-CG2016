@@ -14,8 +14,6 @@ import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.glu.GLU;
 
-
-
 /**
  * Genius.java <BR>
  * author: Douglas e Rodolfo
@@ -140,9 +138,9 @@ public class Genius implements GLEventListener {
         //Concentracao do brilho
         gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
         
+        desenhaCubos(gl);
         gerarOrdem(gl);
         
-        desenhaCubos(gl);
         gl.glFlush();
     }
 
@@ -202,6 +200,9 @@ public class Genius implements GLEventListener {
         ordemJogo[countVetor] = sorteiaCor();
         countVetor++;
         
+        System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
+        System.out.println("countVetor: " +countVetor);
+        
         for(i = 0; i < countVetor; i++){
             //Salvando os desenhos para que a translacao nao seja acumulativa
             gl.glPushMatrix();
@@ -212,7 +213,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(-0.4f, 0.4f, 0.5f);                    
                     gl.glColor3f(0.0f, 1.0f, 0.0f);
                     glut.glutSolidCube(0.8f);                    
-                    try {Thread.sleep(500);} 
+                    try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ele ao normal
                     gl.glColor3f(0.0f, 0.2f, 0.0f);
@@ -225,7 +226,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(0.4f, 0.4f, 0.5f);                    
                     gl.glColor3f(1.0f, 0.0f, 0.0f);
                     glut.glutSolidCube(0.8f);
-                    try {Thread.sleep(500);} 
+                    try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ao original
                     gl.glColor3f(0.2f, 0.0f, 0.0f);
@@ -238,7 +239,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(-0.4f, -0.4f, 0.5f);                    
                     gl.glColor3f(1.0f, 1.0f, 0.0f);
                     glut.glutSolidCube(0.8f);
-                    try {Thread.sleep(500);} 
+                    try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ao original
                     gl.glColor3f(0.2f, 0.2f, 0.0f);
@@ -251,7 +252,7 @@ public class Genius implements GLEventListener {
                     gl.glTranslatef(0.4f, -0.4f, 0.5f);                    
                     gl.glColor3f(0.0f, 0.0f, 1.0f);
                     glut.glutSolidCube(0.8f);
-                    try {Thread.sleep(500);} 
+                    try {Thread.sleep(2000);} 
                     catch (InterruptedException e) {System.out.println(e);}
                     //Volto ao original
                     gl.glColor3f(0.0f, 0.0f, 0.2f);
