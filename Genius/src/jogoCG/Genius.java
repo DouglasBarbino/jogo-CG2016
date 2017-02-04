@@ -1,6 +1,7 @@
 package jogoCG;
 
 import com.sun.opengl.util.Animator;
+import com.sun.opengl.util.GLUT;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -16,9 +17,7 @@ import javax.media.opengl.glu.GLU;
 
 /**
  * Genius.java <BR>
- * author: Brian Paul (converted to Java by Ron Cemer and Sven Goethel) <P>
- *
- * This version is equal to Brian Paul's version 1.2 1999/10/21
+ * author: Douglas e Rodolfo
  */
 public class Genius implements GLEventListener {
 
@@ -28,6 +27,7 @@ public class Genius implements GLEventListener {
     private static int[] yCirc = new int[1000];
     private static int count;
     private static int countCirc;
+    GLUT glut = new GLUT();
 
     public static void main(String[] args) {
         count = 0;
@@ -104,14 +104,36 @@ public class Genius implements GLEventListener {
         GL gl = drawable.getGL();
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glLoadIdentity();
-        //Chama funcoes com o codigo
+        desenhaCubos(gl);
         gl.glFlush();
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
     
-    //private void drawMouseLines(GL gl) {
-    //}
+    private void desenhaCubos(GL gl) {
+        //Cubo verde
+        gl.glTranslatef(0.0f, 0.0f, 0.0f);
+        //Draw a simple cube
+        gl.glColor3f(0.0f, 0.5f, 0.0f);
+        glut.glutSolidCube(10.0f);
+        
+        //Cubo vermelho
+        gl.glTranslatef(2.0f, -2.0f, -6.0f);
+        //Draw a simple cube
+        gl.glColor3f(0.9f, 0.0f, 0.0f);
+        glut.glutSolidCube(1.0f);
+        
+        //Cubo amarelo
+        gl.glTranslatef(-2.0f, 2.0f, 0.0f);
+        //Draw a simple cube
+        gl.glColor3f(1.0f, 1.0f, 0.0f);
+        glut.glutSolidCube(1.0f);
+        
+        //Cubo azul
+        gl.glTranslatef(2.0f, 2.0f, -12.0f);
+        //Draw a simple cube
+        gl.glColor3f(0.0f, 0.0f, 1.0f);
+        glut.glutSolidCube(1.0f);
+    }
 }
-
