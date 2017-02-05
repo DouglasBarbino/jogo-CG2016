@@ -22,10 +22,7 @@ public class Genius implements GLEventListener {
 
     private static int[] x = new int[1000];
     private static int[] y = new int[1000];
-    private static int[] xCirc = new int[1000];
-    private static int[] yCirc = new int[1000];
     private static int count;
-    private static int countCirc;
     GLUT glut = new GLUT();
     GLU glu = new GLU();
     
@@ -41,14 +38,16 @@ public class Genius implements GLEventListener {
     //Variáveis para manipularem o jogo
     private static Random random = new Random();
     private static int[] ordemJogo = new int[200];//Vetor que armazenara as ordens das cores que o jogador devera clicar
-    int[] ordemJogador = new int[200];//vetor que armazenara a ordem de cores clicada pelo jogador.
+    private static int[] ordemJogador = new int[200];//vetor que armazenara a ordem de cores clicada pelo jogador.
     private static int countVetor = -1;
+    private static int countJogador = 0;
     private static int i = 0;
+    //Variavel para autorizar o clique que o jogador der
+    private static int liberaClique = 0;
+    private static int limpar = 0;
 
     public static void main(String[] args) {
         count = 0;
-        countCirc = 0;
-        //countVetor = 0;
         Frame frame = new Frame("Genius");
         final GLCanvas canvas = new GLCanvas();
 
@@ -76,16 +75,21 @@ public class Genius implements GLEventListener {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if (e.getButton() == MouseEvent.BUTTON1) { //Botao esquerdo
-                    x[count] = e.getX() - 292; //centralizando
+                if (e.getButton() == MouseEvent.BUTTON1 && liberaClique == 1) { //Botao esquerdo
+                    x[count] = e.getX() - 392; //centralizando
                     y[count] = e.getY() * -1 + 280; //invertendo e centralizando
                     System.out.println("x,y=" + x[count] + "," + y[count]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
+                    //Clique no cubo verde
+                    if (x[count] < 0 && x[count] > -315 && y[count] >= 0 && y[count] < 225)
+                        ordemJogador[countJogador] = 0;
+                    if (x[count] >= 0 && x[count] < 315 && y[count] >= 0 && y[count] < 225)
+                        ordemJogador[countJogador] = 1;
+                    if (x[count] < 0 && x[count] > -315 && y[count] < 0 && y[count] > -225)
+                        ordemJogador[countJogador] = 2;
+                    if (x[count] >= 0 && x[count] < 315 && y[count] < 0 && y[count] > -225)
+                        ordemJogador[countJogador] = 3;
                     count++;
-                } else if (e.getButton() == MouseEvent.BUTTON3) { //Botao esquerdo
-                    xCirc[countCirc] = e.getX() - 292; //centralizando
-                    yCirc[countCirc] = e.getY() * -1 + 280; //invertendo e centralizando
-                    System.out.println("x,y=" + xCirc[countCirc] + "," + yCirc[countCirc]);//TRATAMENTO DAS COORDENADAS DO MOUSE (0,0) SER NO CENTRO DA TELA E SER POSITIVO PARA CIMA E DIREITA
-                    countCirc++;
+                    countJogador++;
                 }
                 canvas.display();
             }
@@ -139,14 +143,29 @@ public class Genius implements GLEventListener {
         //Concentracao do brilho
         gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
         
-        //So vai executar na primeira iteracao
-        if (countVetor < 0){
-            desenhaCubos(gl, 4);
-            countVetor++;
-        }
-        else
-            gerarOrdem(gl);
         
+        if (liberaClique != 1){
+            //So vai executar na primeira iteracao
+            if (countVetor < 0){
+                desenhaCubos(gl, 4);
+                countVetor++;
+            }
+            else
+                gerarOrdem(gl);
+        }
+        else{
+            //Deixa congelado com os cubos apagados
+            //Tempo para o cubo aceso aparecer
+            if (limpar == 0){
+                try {Thread.sleep(2000);} 
+                    catch (InterruptedException e) {System.out.println(e);}
+            }
+            desenhaCubos(gl, 4);
+            limpar = 1;
+        }
+        if (countVetor == countJogador ){
+            verificaJogada();
+        }
         gl.glFlush();
     }
 
@@ -161,6 +180,8 @@ public class Genius implements GLEventListener {
         gl.glPushMatrix();
         gl.glPushMatrix();
         
+        //Aqui se verifica qual cubo ja foi desenhado aceso para desenhar os outros,
+        //no caso da primeira vez se desenha todos apagados
         if (naoDesenha != 0){
             //Cubo verde
             gl.glTranslatef(-0.4f, 0.4f, 0.5f);
@@ -217,9 +238,12 @@ public class Genius implements GLEventListener {
     //Esta funcao servira para inserir e fazer as cores brilharem na ordem que o jogador deve escolher
     public void gerarOrdem(GL gl){
         
+        System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
+        try {Thread.sleep(2000);} 
+            catch (InterruptedException e) {System.out.println(e);}
+        
         //Salvando os desenhos para que a translacao nao seja acumulativa
         gl.glPushMatrix();
-        System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
             
         switch(ordemJogo[i]){
             case 0: //VERDE 
@@ -256,18 +280,36 @@ public class Genius implements GLEventListener {
         }  
             
         desenhaCubos(gl, ordemJogo[i]);
-        try {Thread.sleep(2000);} 
-            catch (InterruptedException e) {System.out.println(e);}
         
         //Um loop for improvisado
-        if (i >= countVetor){
+        if (i == countVetor){
             //System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
             System.out.println("countVetor: " +countVetor);
             countVetor++;
             ordemJogo[countVetor] = random.nextInt(4);
             i = 0;
+            liberaClique = 1;
         }
         else
             i++;
+    }
+    
+    private void verificaJogada() {    
+        for (int indice = 0; indice < countVetor; indice++){
+            if (ordemJogo[indice] != ordemJogador[indice]){
+                //Volta pro comeco
+                indice = countVetor;
+                countVetor = -1;
+                i = 0;
+            }
+        }
+        
+        //Jogador nao errou
+        //if (countVetor != -1){
+            
+        //}
+        countJogador = 0;
+        liberaClique = 0;
+        limpar = 0;
     }
 }
