@@ -42,7 +42,8 @@ public class Genius implements GLEventListener {
     private static Random random = new Random();
     private static int[] ordemJogo = new int[200];//Vetor que armazenara as ordens das cores que o jogador devera clicar
     int[] ordemJogador = new int[200];//vetor que armazenara a ordem de cores clicada pelo jogador.
-    private static int countVetor = 0;
+    private static int countVetor = -1;
+    private static int i = 0;
 
     public static void main(String[] args) {
         count = 0;
@@ -138,8 +139,13 @@ public class Genius implements GLEventListener {
         //Concentracao do brilho
         gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
         
-        desenhaCubos(gl);
-        gerarOrdem(gl);
+        //So vai executar na primeira iteracao
+        if (countVetor < 0){
+            desenhaCubos(gl, 4);
+            countVetor++;
+        }
+        else
+            gerarOrdem(gl);
         
         gl.glFlush();
     }
@@ -147,7 +153,7 @@ public class Genius implements GLEventListener {
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
     }
     
-    private void desenhaCubos(GL gl) {
+    private void desenhaCubos(GL gl, int naoDesenha) {
         
         //Salvando os desenhos para que a translacao nao seja acumulativa
         gl.glPushMatrix();
@@ -155,39 +161,51 @@ public class Genius implements GLEventListener {
         gl.glPushMatrix();
         gl.glPushMatrix();
         
-        //Cubo verde
-        gl.glTranslatef(-0.4f, 0.4f, 0.5f);
-        //Draw a simple cube
-        gl.glColor3f(0.0f, 0.2f, 0.0f);
-        glut.glutSolidCube(0.8f);
-        //Retorna o desenho original sem a TRANSLACAO
-        gl.glPopMatrix();
+        if (naoDesenha != 0){
+            //Cubo verde
+            gl.glTranslatef(-0.4f, 0.4f, 0.5f);
+            //Draw a simple cube
+            gl.glColor3f(0.0f, 0.2f, 0.0f);
+            glut.glutSolidCube(0.8f);
+            //Retorna o desenho original sem a TRANSLACAO
+            gl.glPopMatrix();
+        }
         
-        //Cubo vermelho
-        gl.glTranslatef(0.4f, 0.4f, 0.5f);
-        //Draw a simple cube
-        gl.glColor3f(0.2f, 0.0f, 0.0f);
-        glut.glutSolidCube(0.8f);
-        //Retorna o desenho original sem a TRANSLACAO
-        gl.glPopMatrix();
+        if (naoDesenha != 1){
+            //Cubo vermelho
+            gl.glTranslatef(0.4f, 0.4f, 0.5f);
+            //Draw a simple cube
+            gl.glColor3f(0.2f, 0.0f, 0.0f);
+            glut.glutSolidCube(0.8f);
+            //Retorna o desenho original sem a TRANSLACAO
+            gl.glPopMatrix();
+        }
         
-        //Cubo amarelo
-        gl.glTranslatef(-0.4f, -0.4f, 0.5f);
-        //Draw a simple cube
-        gl.glColor3f(0.2f, 0.2f, 0.0f);
-        glut.glutSolidCube(0.8f);
-        //Retorna o desenho original sem a TRANSLACAO
-        gl.glPopMatrix();
+        if (naoDesenha != 2){
+            //Cubo amarelo
+            gl.glTranslatef(-0.4f, -0.4f, 0.5f);
+            //Draw a simple cube
+            gl.glColor3f(0.2f, 0.2f, 0.0f);
+            glut.glutSolidCube(0.8f);
+            //Retorna o desenho original sem a TRANSLACAO
+            gl.glPopMatrix();
+        }
         
-        //Cubo azul
-        gl.glTranslatef(0.4f, -0.4f, 0.5f);
-        //Draw a simple cube
-        gl.glColor3f(0.0f, 0.0f, 0.2f);
-        glut.glutSolidCube(0.8f);
-        //Retorna o desenho original sem a TRANSLACAO
-        gl.glPopMatrix();
+        if (naoDesenha != 3){
+            //Cubo azul
+            gl.glTranslatef(0.4f, -0.4f, 0.5f);
+            //Draw a simple cube
+            gl.glColor3f(0.0f, 0.0f, 0.2f);
+            glut.glutSolidCube(0.8f);
+            //Retorna o desenho original sem a TRANSLACAO
+            gl.glPopMatrix();
+        }
         
-        //gl.glFlush();
+        if (naoDesenha != 4){
+            //Gasta o ultimo popMatrix que estava armazenado
+            gl.glPopMatrix();
+        }
+        gl.glFlush();
     }
     
     //Essa funcao será a responsavel por gerar uma nova cor para o vetor ordemJogo[]
@@ -198,75 +216,58 @@ public class Genius implements GLEventListener {
     
     //Esta funcao servira para inserir e fazer as cores brilharem na ordem que o jogador deve escolher
     public void gerarOrdem(GL gl){
-        int i;
-        ordemJogo[countVetor] = random.nextInt(4);
-        countVetor++;
         
-        //System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
-        System.out.println("countVetor: " +countVetor);
-        
-        for(i = 0; i < countVetor; i++){
-            //Salvando os desenhos para que a translacao nao seja acumulativa
-            gl.glPushMatrix();
-            System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
+        //Salvando os desenhos para que a translacao nao seja acumulativa
+        gl.glPushMatrix();
+        System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
             
-            switch(ordemJogo[i]){
-                case 0: //VERDE 
-                    //Faco cubo brilhar
-                    gl.glTranslatef(-0.4f, 0.4f, 0.5f);                    
-                    gl.glColor3f(0.0f, 1.0f, 0.0f);
-                    glut.glutSolidCube(0.8f); 
-                    gl.glFinish();
-                    try {Thread.sleep(2000);} 
-                    catch (InterruptedException e) {System.out.println(e);}
-                    //Volto ele ao normal
-                    gl.glColor3f(0.0f, 0.2f, 0.0f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glPopMatrix();
-                    break;
+        switch(ordemJogo[i]){
+            case 0: //VERDE 
+                //Faco cubo brilhar
+                gl.glTranslatef(-0.4f, 0.4f, 0.5f);                    
+                gl.glColor3f(0.0f, 1.0f, 0.0f);
+                glut.glutSolidCube(0.8f); 
+                gl.glPopMatrix();
+                break;
                     
-                case 1: //VERMELHO
-                    //Faco cubo brilhar
-                    gl.glTranslatef(0.4f, 0.4f, 0.5f);                    
-                    gl.glColor3f(1.0f, 0.0f, 0.0f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glFinish();
-                    try {Thread.sleep(2000);} 
-                    catch (InterruptedException e) {System.out.println(e);}
-                    //Volto ao original
-                    gl.glColor3f(0.2f, 0.0f, 0.0f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glPopMatrix();
-                    break;
+            case 1: //VERMELHO
+                //Faco cubo brilhar
+                gl.glTranslatef(0.4f, 0.4f, 0.5f);                    
+                gl.glColor3f(1.0f, 0.0f, 0.0f);
+                glut.glutSolidCube(0.8f);
+                gl.glPopMatrix();
+                break;
                     
-                case 2: //AMARELO
-                    //Faco cubo brilhar
-                    gl.glTranslatef(-0.4f, -0.4f, 0.5f);                    
-                    gl.glColor3f(1.0f, 1.0f, 0.0f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glFinish();
-                    try {Thread.sleep(2000);} 
-                    catch (InterruptedException e) {System.out.println(e);}
-                    //Volto ao original
-                    gl.glColor3f(0.2f, 0.2f, 0.0f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glPopMatrix();
-                    break;
+            case 2: //AMARELO
+                //Faco cubo brilhar
+                gl.glTranslatef(-0.4f, -0.4f, 0.5f);                    
+                gl.glColor3f(1.0f, 1.0f, 0.0f);
+                glut.glutSolidCube(0.8f);
+                gl.glPopMatrix();
+                break;
                     
-                case 3: //AZUL
-                    //Faco cubo brilhar
-                    gl.glTranslatef(0.4f, -0.4f, 0.5f);                    
-                    gl.glColor3f(0.0f, 0.0f, 1.0f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glFinish();
-                    try {Thread.sleep(2000);} 
-                    catch (InterruptedException e) {System.out.println(e);}
-                    //Volto ao original
-                    gl.glColor3f(0.0f, 0.0f, 0.2f);
-                    glut.glutSolidCube(0.8f);
-                    gl.glPopMatrix();
-                    break;
-            }  
-        }        
+            case 3: //AZUL
+                //Faco cubo brilhar
+                gl.glTranslatef(0.4f, -0.4f, 0.5f);                    
+                gl.glColor3f(0.0f, 0.0f, 1.0f);
+                glut.glutSolidCube(0.8f);
+                gl.glPopMatrix();
+                break;
+        }  
+            
+        desenhaCubos(gl, ordemJogo[i]);
+        try {Thread.sleep(2000);} 
+            catch (InterruptedException e) {System.out.println(e);}
+        
+        //Um loop for improvisado
+        if (i >= countVetor){
+            //System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
+            System.out.println("countVetor: " +countVetor);
+            countVetor++;
+            ordemJogo[countVetor] = random.nextInt(4);
+            i = 0;
+        }
+        else
+            i++;
     }
 }
