@@ -38,6 +38,8 @@ public class Genius implements GLEventListener {
     private static int[] ordemJogador = new int[200];//vetor que armazenara a ordem de cores clicada pelo jogador.
     private static int countVetor = -1;
     private static int countJogador = 0;
+    private static int aux = 0;
+    private float rtri = 0.0f;
     private static int i = 0;
     //Variavel para autorizar o clique que o jogador der
     private static int liberaClique = 0;
@@ -87,6 +89,7 @@ public class Genius implements GLEventListener {
                     if (x[count] >= 0 && x[count] < 315 && y[count] < 0 && y[count] > -225)
                         ordemJogador[countJogador] = 3;
                     count++;
+                    aux = countJogador;
                     countJogador++;
                 }
                 canvas.display();
@@ -151,6 +154,7 @@ public class Genius implements GLEventListener {
         GL gl = drawable.getGL();
         
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
+        gl.glShadeModel(GL.GL_SMOOTH);
         gl.glLoadIdentity(); 
         
         //(eyeX, eyeY, eyeZ, aimX, aimY, aimZ, upX, upY, upZ)
@@ -180,12 +184,34 @@ public class Genius implements GLEventListener {
             pontText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
             pontText.draw("Turno do JOGADOR", 0, 10);
             pontText.endRendering();
+            
+            //Ira mostrar as cores clicadas pelo usuario
+            gl.glPushMatrix();
+            gl.glTranslatef(0.9f, 0.9f, 0.5f);
+            gl.glRotatef( rtri, 0.0f, 1.0f, 0.0f );
+            
+            if(ordemJogador[aux] == 0){
+                gl.glColor3f(0.0f, 1.0f, 0.0f);
+                glut.glutSolidSphere(0.1, 20, 10);
+            }
+            if(ordemJogador[aux] == 1){
+                gl.glColor3f(1.0f, 0.0f, 0.0f);
+                glut.glutSolidSphere(0.1, 20, 10);
+            }
+            if(ordemJogador[aux] == 2){
+                gl.glColor3f(1.0f, 1.0f, 0.0f);
+                glut.glutSolidSphere(0.1, 20, 10);
+            }
+            if(ordemJogador[aux] == 3){
+                gl.glColor3f(0.0f, 0.0f, 1.0f);
+                glut.glutSolidSphere(0.1, 20, 10);
+            }
+            gl.glPopMatrix();
         }
         if (countVetor == countJogador ){
             verificaJogada();            
-        }
-        gl.glFlush();
-        
+        }        
+                
         //Escrita da pontuacao do jogador                
         TextRenderer pontText = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
         //Tamanho da tela
@@ -193,6 +219,10 @@ public class Genius implements GLEventListener {
         pontText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
         pontText.draw("Pontuacao: " +pontuacao, 0, 570);
         pontText.endRendering();
+        
+        rtri +=0.2f;
+        
+        gl.glFlush();
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
