@@ -2,12 +2,12 @@ O nosso jogo foi baseado no famoso jogo GENIUS.
 Neste jogo, uma sequencia de cores sera passada ao jogador, incialmente.
 Quando a sequencia terminar, o jogador devera clicar nos quadrados na sequencia que foi passada inicialmente.
 
-Ao iniciar, um tabuleiro com 4 quadrados com diferentes cores sera apresentado na tela. Uma das 4 cores ira piscar e, entao, o programa 
-ira aguardar o jogador repetir a cor que lhe foi mostrada. Se o jogador acertar, novamente sera mostrada a mesma cor anterior e mais uma,
-aumentando a sequencia que o jogador devera reproduzir. A cada acerto do jogador, uma nova cor sera acrescentada na sequencia.
+Ao iniciar, um tabuleiro com 4 quadrados com diferentes cores sera apresentado na tela. Uma das 4 cores ira piscar e, entao, o programa ira aguardar o jogador repetir a cor que lhe foi mostrada. Se o jogador acertar, novamente sera mostrada a mesma cor anterior e mais uma, aumentando a sequencia que o jogador devera reproduzir. A cada acerto do jogador, uma nova cor sera acrescentada na sequencia.
 Se o jogador errar, a sequencia sera reiniciada, mas, agora, com cores diferentes.
 
-Atencao: primeiramente, a sequencia sera mostrada para o usuario. Espere ate que a mensagem "Turno do JOGADOR" apareca no canto
-inferior esquerdo da tela para reproduzir a sequencia. Para reproduzir a sequencia, basta clicar nos quadrados correspondentes.
-A pontuacao do jogador sera mostrada no canto superior esquerdo. Cada vez que o jogador acertar a sequencia, um ponto sera acrescentado
-ao seu score. Se o jogador errar, sua pontuacao volta para zero.
+Atencao: 
+Primeiramente, a sequencia sera mostrada para o usuario. No canto esquerdo, aparecera um numero, que mostrara a quantidade de cores da sequencia atual. Cuidado, quando for gerado duas cores iguais consecutivas na sequencia, o tabuleiro nao ira apagar. Fique atento no numero a esquerda para saber quantas cores voce devera selecionar.
+Por exemplo, se na primeira sequenncia for gerado uma sequencia verde, e novamente o verde for escolhido na proxima sequencia, o numero te mostrara 2, mas voce nao percebera que o quadrado verde foi aceso duas vezes.  
+Espere ate que a mensagem "Turno do JOGADOR" apareca no canto inferior esquerdo da tela para reproduzir a sequencia. Para reproduzir a sequencia, basta clicar nos quadrados correspondentes.
+Junatamente com a mensagem "Turno do JOGADOR", aparecerá uma bola brilhante no canto superior direito da tela. Esta bola mostrara a cor que voce acabou de clicar. Portanto, sempre olhe para essa bola para verificar que voce realmente clicou na cor certa e o clique foi computado.
+A pontuacao do jogador sera mostrada no canto superior esquerdo. Cada vez que o jogador acertar a sequencia, um ponto sera acrescentado ao seu score. Se o jogador errar, sua pontuacao volta para zero.

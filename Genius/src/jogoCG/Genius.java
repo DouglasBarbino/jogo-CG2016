@@ -173,14 +173,14 @@ public class Genius implements GLEventListener {
                 desenhaCubos(gl, 4);
                 countVetor++;
             }
-            else
-                gerarOrdem(gl);
+            else                
+                gerarOrdem(gl);              
         }
         else{
             //Deixa congelado com os cubos apagados
             //Tempo para o cubo aceso aparecer
             if (limpar == 0){
-                try {Thread.sleep(1000);} 
+                try {Thread.sleep(800);} 
                     catch (InterruptedException e) {System.out.println(e);}
             }
             desenhaCubos(gl, 4);
@@ -219,6 +219,7 @@ public class Genius implements GLEventListener {
             }
             gl.glPopMatrix();
         }
+        
         if (countVetor == countJogador ){
             verificaJogada();            
         }        
@@ -231,8 +232,8 @@ public class Genius implements GLEventListener {
         pontText.draw("Pontuacao: " +pontuacao, 0, 570);
         pontText.endRendering();
         
-        rtri +=0.2f;
-        
+        rtri +=0.2f; 
+                
         gl.glFlush();
     }
 
@@ -240,7 +241,7 @@ public class Genius implements GLEventListener {
     }
     
     private void desenhaCubos(GL gl, int naoDesenha) {
-        
+                
         //Salvando os desenhos para que a translacao nao seja acumulativa
         gl.glPushMatrix();
         gl.glPushMatrix();
@@ -254,6 +255,7 @@ public class Genius implements GLEventListener {
             gl.glTranslatef(-0.4f, 0.4f, 0.5f);
             //Draw a simple cube
             gl.glColor3f(0.0f, 0.2f, 0.0f);
+            gl.glNormal3d(0, 0, 1);
             glut.glutSolidCube(0.8f);
             //Retorna o desenho original sem a TRANSLACAO
             gl.glPopMatrix();
@@ -264,6 +266,7 @@ public class Genius implements GLEventListener {
             gl.glTranslatef(0.4f, 0.4f, 0.5f);
             //Draw a simple cube
             gl.glColor3f(0.2f, 0.0f, 0.0f);
+            gl.glNormal3d(0, 0, 1);
             glut.glutSolidCube(0.8f);
             //Retorna o desenho original sem a TRANSLACAO
             gl.glPopMatrix();
@@ -274,6 +277,7 @@ public class Genius implements GLEventListener {
             gl.glTranslatef(-0.4f, -0.4f, 0.5f);
             //Draw a simple cube
             gl.glColor3f(0.2f, 0.2f, 0.0f);
+            gl.glNormal3d(0, 0, 1);
             glut.glutSolidCube(0.8f);
             //Retorna o desenho original sem a TRANSLACAO
             gl.glPopMatrix();
@@ -284,6 +288,7 @@ public class Genius implements GLEventListener {
             gl.glTranslatef(0.4f, -0.4f, 0.5f);
             //Draw a simple cube
             gl.glColor3f(0.0f, 0.0f, 0.2f);
+            gl.glNormal3d(0, 0, 1);
             glut.glutSolidCube(0.8f);
             //Retorna o desenho original sem a TRANSLACAO
             gl.glPopMatrix();
@@ -306,7 +311,7 @@ public class Genius implements GLEventListener {
     public void gerarOrdem(GL gl){
         
         //System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
-        try {Thread.sleep(1000);} 
+        try {Thread.sleep(500);} 
         catch (InterruptedException e) {System.out.println(e);}
         
         //Salvando os desenhos para que a translacao nao seja acumulativa
@@ -317,6 +322,7 @@ public class Genius implements GLEventListener {
                 //Faco cubo brilhar
                 gl.glTranslatef(-0.4f, 0.4f, 0.5f);                    
                 gl.glColor3f(0.0f, 1.0f, 0.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidCube(0.8f); 
                 gl.glPopMatrix();
                 break;
@@ -325,6 +331,7 @@ public class Genius implements GLEventListener {
                 //Faco cubo brilhar
                 gl.glTranslatef(0.4f, 0.4f, 0.5f);                    
                 gl.glColor3f(1.0f, 0.0f, 0.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidCube(0.8f);
                 gl.glPopMatrix();
                 break;
@@ -333,6 +340,7 @@ public class Genius implements GLEventListener {
                 //Faco cubo brilhar
                 gl.glTranslatef(-0.4f, -0.4f, 0.5f);                    
                 gl.glColor3f(1.0f, 1.0f, 0.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidCube(0.8f);
                 gl.glPopMatrix();
                 break;
@@ -341,6 +349,7 @@ public class Genius implements GLEventListener {
                 //Faco cubo brilhar
                 gl.glTranslatef(0.4f, -0.4f, 0.5f);                    
                 gl.glColor3f(0.0f, 0.0f, 1.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidCube(0.8f);
                 gl.glPopMatrix();
                 break;
@@ -348,6 +357,13 @@ public class Genius implements GLEventListener {
             
         desenhaCubos(gl, ordemJogo[i]);
         
+        TextRenderer iText = new TextRenderer(new Font("Verdana", Font.BOLD, 50));
+        //Tamanho da tela
+        iText.beginRendering(800, 600);
+        iText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+        iText.draw(""+(i+1), 0, 300);
+        iText.endRendering();
+                
         //Um loop for improvisado
         if (i == countVetor){
             //System.out.println("ordemJogo[]: " +ordemJogo[countVetor]);
@@ -358,8 +374,9 @@ public class Genius implements GLEventListener {
             liberaClique = 1;
             System.out.println("Faca a sequencia!!");
         }
-        else
+        else{
             i++;
+        }            
     }
     
     private void verificaJogada() {    
