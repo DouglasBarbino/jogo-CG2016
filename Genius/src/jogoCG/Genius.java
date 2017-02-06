@@ -116,27 +116,7 @@ public class Genius implements GLEventListener {
         gl.glEnable(GL_NORMALIZE);        
         gl.glShadeModel(GL.GL_SMOOTH);  
         
-        //RGB e alpha (transparência)
-        float[] light_ambient = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float[] light_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float[] light_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
-        float[] light_position = { 0.0f, 0.0f, 5.0f, 0.0f };
-    
-        //Para o tipo de material
-        float[] specular = { 1.0f, 1.0f, 1.0f, 1.0f };
         
-        //definindo todos os componentes da luz 0)
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, light_ambient, 0);
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, light_diffuse, 0);
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR,light_specular, 0);
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION,light_position, 0);
-        gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, light_ambient, 0);
-        
-        //Define material
-        gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT);
-        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, specular, 0);
-        //Concentracao do brilho
-        gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -159,10 +139,33 @@ public class Genius implements GLEventListener {
         
         gl.glClear(GL.GL_COLOR_BUFFER_BIT | GL.GL_DEPTH_BUFFER_BIT);
         gl.glShadeModel(GL.GL_SMOOTH);
+        
+        //RGB e alpha (transparência)
+        float[] light_ambient = { 0.2f, 0.2f, 0.2f, 1.0f };
+        float[] light_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float[] light_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float[] light_position = { 2.0f, 2.0f, -10.0f, 0.0f };
+    
+        //Para o tipo de material
+        float[] specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+        
+        //definindo todos os componentes da luz 0)
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, light_ambient, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, light_diffuse, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR,light_specular, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION,light_position, 0);
+        gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, light_ambient, 0);
+        
+        //Define material
+        gl.glColorMaterial(GL.GL_FRONT_AND_BACK, GL.GL_AMBIENT_AND_DIFFUSE);
+        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, specular, 0);
+        //Concentracao do brilho
+        gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
+        
         gl.glLoadIdentity(); 
         
         //(eyeX, eyeY, eyeZ, aimX, aimY, aimZ, upX, upY, upZ)
-        glu.gluLookAt(0.0,0.0,1.0,  0.0,0.0,0.3,  0.0,1.0,0.0);             
+        //glu.gluLookAt(0.0,0.0,1.0,  0.0,0.0,0.3,  0.0,1.0,0.0);             
            
         if (liberaClique != 1){
             //So vai executar na primeira iteracao
@@ -196,18 +199,22 @@ public class Genius implements GLEventListener {
             
             if(ordemJogador[aux] == 0){
                 gl.glColor3f(0.0f, 1.0f, 0.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidSphere(0.1, 20, 10);
             }
             if(ordemJogador[aux] == 1){
                 gl.glColor3f(1.0f, 0.0f, 0.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidSphere(0.1, 20, 10);
             }
             if(ordemJogador[aux] == 2){
                 gl.glColor3f(1.0f, 1.0f, 0.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidSphere(0.1, 20, 10);
             }
             if(ordemJogador[aux] == 3){
                 gl.glColor3f(0.0f, 0.0f, 1.0f);
+                gl.glNormal3d(0, 0, 1);
                 glut.glutSolidSphere(0.1, 20, 10);
             }
             gl.glPopMatrix();
