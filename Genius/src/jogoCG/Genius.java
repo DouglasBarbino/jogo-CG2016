@@ -2,6 +2,8 @@ package jogoCG;
 
 import com.sun.opengl.util.Animator;
 import com.sun.opengl.util.GLUT;
+import com.sun.opengl.util.j2d.TextRenderer;
+import java.awt.Font;
 import java.awt.Frame;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
@@ -9,6 +11,10 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.util.Random;
 import javax.media.opengl.GL;
+import static javax.media.opengl.GL.GL_COLOR_MATERIAL;
+import static javax.media.opengl.GL.GL_LIGHT0;
+import static javax.media.opengl.GL.GL_LIGHTING;
+import static javax.media.opengl.GL.GL_NORMALIZE;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCanvas;
 import javax.media.opengl.GLEventListener;
@@ -24,16 +30,7 @@ public class Genius implements GLEventListener {
     private static int[] y = new int[1000];
     private static int count;
     GLUT glut = new GLUT();
-    GLU glu = new GLU();
-    
-    //RGB e alpha (transparência)
-    float[] light_ambient = { 0.0f, 0.0f, 0.0f, 1.0f };
-    float[] light_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
-    float[] light_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
-    float[] light_position = { 2.0f, 5.0f, 5.0f, 0.0f };
-    
-    //Para o tipo de material
-    float[] specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+    GLU glu = new GLU();       
     
     //Variáveis para manipularem o jogo
     private static Random random = new Random();
@@ -45,6 +42,7 @@ public class Genius implements GLEventListener {
     //Variavel para autorizar o clique que o jogador der
     private static int liberaClique = 0;
     private static int limpar = 0;
+    private static int pontuacao = -1;
 
     public static void main(String[] args) {
         count = 0;
@@ -104,7 +102,34 @@ public class Genius implements GLEventListener {
         GL gl = drawable.getGL();
         gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
         //Definicao do modelo de tonalizacao (ja veio no original)
-        gl.glShadeModel(GL.GL_SMOOTH);              
+        gl.glEnable(GL.GL_DEPTH_TEST);
+        gl.glEnable(GL_COLOR_MATERIAL);
+        gl.glEnable(GL_LIGHT0);
+        gl.glEnable(GL_LIGHTING);
+        gl.glEnable(GL_NORMALIZE);        
+        gl.glShadeModel(GL.GL_SMOOTH);  
+        
+        //RGB e alpha (transparência)
+        float[] light_ambient = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float[] light_diffuse = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float[] light_specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+        float[] light_position = { 0.0f, 0.0f, 5.0f, 0.0f };
+    
+        //Para o tipo de material
+        float[] specular = { 1.0f, 1.0f, 1.0f, 1.0f };
+        
+        //definindo todos os componentes da luz 0)
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, light_ambient, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, light_diffuse, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR,light_specular, 0);
+        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION,light_position, 0);
+        gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, light_ambient, 0);
+        
+        //Define material
+        gl.glColorMaterial(GL.GL_FRONT, GL.GL_AMBIENT);
+        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, specular, 0);
+        //Concentracao do brilho
+        gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
     }
 
     public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -129,21 +154,8 @@ public class Genius implements GLEventListener {
         gl.glLoadIdentity(); 
         
         //(eyeX, eyeY, eyeZ, aimX, aimY, aimZ, upX, upY, upZ)
-        glu.gluLookAt(0.0,0.0,1.0,  0.0,0.0,0.3,  0.0,1.0,0.0);
-                
-        //definindo todos os componentes da luz 0)
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_AMBIENT, light_ambient, 0);
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_DIFFUSE, light_diffuse, 0);
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_SPECULAR,light_specular, 0);
-        gl.glLightfv(GL.GL_LIGHT0, GL.GL_POSITION,light_position, 0);
-        gl.glLightModelfv(GL.GL_LIGHT_MODEL_AMBIENT, light_ambient, 0);
-        
-        //Define material
-        gl.glMaterialfv(GL.GL_FRONT, GL.GL_SPECULAR, specular, 0);
-        //Concentracao do brilho
-        gl.glMateriali(GL.GL_FRONT, GL.GL_SHININESS, 80);
-        
-        
+        glu.gluLookAt(0.0,0.0,1.0,  0.0,0.0,0.3,  0.0,1.0,0.0);             
+           
         if (liberaClique != 1){
             //So vai executar na primeira iteracao
             if (countVetor < 0){
@@ -157,16 +169,30 @@ public class Genius implements GLEventListener {
             //Deixa congelado com os cubos apagados
             //Tempo para o cubo aceso aparecer
             if (limpar == 0){
-                try {Thread.sleep(2000);} 
+                try {Thread.sleep(1000);} 
                     catch (InterruptedException e) {System.out.println(e);}
             }
             desenhaCubos(gl, 4);
             limpar = 1;
+            TextRenderer pontText = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+            //Tamanho da tela
+            pontText.beginRendering(800, 600);
+            pontText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+            pontText.draw("Turno do JOGADOR", 0, 10);
+            pontText.endRendering();
         }
         if (countVetor == countJogador ){
-            verificaJogada();
+            verificaJogada();            
         }
         gl.glFlush();
+        
+        //Escrita da pontuacao do jogador                
+        TextRenderer pontText = new TextRenderer(new Font("Verdana", Font.BOLD, 30));
+        //Tamanho da tela
+        pontText.beginRendering(800, 600);
+        pontText.setColor(0.0f, 0.0f, 0.0f, 1.0f);
+        pontText.draw("Pontuacao: " +pontuacao, 0, 570);
+        pontText.endRendering();
     }
 
     public void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
@@ -238,9 +264,9 @@ public class Genius implements GLEventListener {
     //Esta funcao servira para inserir e fazer as cores brilharem na ordem que o jogador deve escolher
     public void gerarOrdem(GL gl){
         
-        System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
-        try {Thread.sleep(2000);} 
-            catch (InterruptedException e) {System.out.println(e);}
+        //System.out.println("ordemJogo[]: " +ordemJogo[i]+ " contador: "+i);
+        try {Thread.sleep(1000);} 
+        catch (InterruptedException e) {System.out.println(e);}
         
         //Salvando os desenhos para que a translacao nao seja acumulativa
         gl.glPushMatrix();
@@ -289,6 +315,7 @@ public class Genius implements GLEventListener {
             ordemJogo[countVetor] = random.nextInt(4);
             i = 0;
             liberaClique = 1;
+            System.out.println("Faca a sequencia!!");
         }
         else
             i++;
@@ -301,13 +328,15 @@ public class Genius implements GLEventListener {
                 indice = countVetor;
                 countVetor = -1;
                 i = 0;
+                pontuacao = -1;
             }
         }
         
         //Jogador nao errou
-        //if (countVetor != -1){
-            
-        //}
+        if (countVetor != -1){
+            pontuacao++;
+        }
+        
         countJogador = 0;
         liberaClique = 0;
         limpar = 0;
