@@ -104,6 +104,10 @@ public class Genius implements GLEventListener {
     public void init(GLAutoDrawable drawable) {
         GL gl = drawable.getGL();
         gl.glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
+        
+        // Enable VSync
+        gl.setSwapInterval(1);
+        
         //Definicao do modelo de tonalizacao (ja veio no original)
         gl.glEnable(GL.GL_DEPTH_TEST);
         gl.glEnable(GL_COLOR_MATERIAL);
